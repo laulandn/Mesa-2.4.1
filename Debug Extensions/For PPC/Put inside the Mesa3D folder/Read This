@@ -1,0 +1,1 @@
+Not avaible at this version!Try to compile the projcet GL inside the Source Code:GL folder.Then get the glShdLib.dgb, and glShdLib.dbg.xSym from the Binaries PPC folder. Put the to the same folder as the program you want to debug. Note: Always run with a debugger!!!

@@ -1,0 +1,1 @@
+aglCreateContextaglDestroyContextaglMakeCurrentaglCopyContextaglGetCurrentContextaglUpdateCurrentaglGetCurrentDrawableaglSetOptionsaglSwapBuffersaglQueryVersionaglGetErroraglChoosePixelFmtaglListPixelFmtsaglGetConfigaglSwapHint

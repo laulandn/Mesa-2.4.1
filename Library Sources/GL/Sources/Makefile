@@ -24,4 +24,4 @@ lib: $(OBJS)
 all: $(OBJS)
 
 clean:
-	rm -f *.o
+	rm -f *.o *.a

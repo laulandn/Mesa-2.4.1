@@ -1,4 +1,4 @@
-LIBNAME=glut
+LIBNAME=glut_common
 
 CC=m68k-apple-macos-gcc
 CXX=m68k-apple-macos-g++
@@ -24,4 +24,4 @@ lib: $(OBJS)
 all: $(OBJS)
 
 clean:
-	rm -f *.o
+	rm -f *.o *.a

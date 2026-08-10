@@ -16,4 +16,4 @@ OBJS=$(subst .c,.o,$(wildcard *.c))
 all: $(OBJS)
 
 clean:
-	rm -f *.o
+	rm -f *.o *.a

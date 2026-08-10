@@ -1,23 +1,27 @@
+LIBNAME=glut_mac
 
-#CC=powerpc-apple-macos-gcc
 CC=m68k-apple-macos-gcc
-#CXX=powerpc-apple-macos-g++
 CXX=m68k-apple-macos-g++
+AR=m68k-apple-macos-ar
+RANLIB=m68k-apple-macos-ranlib
+#CC=powerpc-apple-macos-gcc
+#CXX=powerpc-apple-macos-g++
+#AR=powerpc-apple-macos-ar
+#RANLIB=powerpc-apple-macos-ranlib
 
-.SUFFIXES: .cp
+CFLAGS= -I../../../Headers -I../Source\ Mac
 
-CFLAGS= -I../../../Headers
-
-OBJS=$(subst .c,.o,$(wildcard *.c)) $(subst .cp,.o,$(wildcard *.cp))
+OBJS=$(subst .c,.o,$(wildcard *.c))
 
 .c.o:
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-.cp.o:
-	$(CXX) $(CFLAGS) -c -o $@ $<
 
+lib: $(OBJS)
+	$(AR) rcv lib$(LIBNAME).a $(OBJS)
+	$(RANLIB) lib$(LIBNAME).a
 
 all: $(OBJS)
 
 clean:
-	rm -f *.o
+	rm -f *.o *.a

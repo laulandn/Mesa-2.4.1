@@ -11,6 +11,7 @@ all:
 	make -C GL/Sources
 	make -C GLU/Sources
 	make -C AUX?TK/Source
+	make -C Stub?Libs
 	make -C GLUT/Source?Common
 	make -i -C GLUT/Source?Mac
 	

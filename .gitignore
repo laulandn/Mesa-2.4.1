@@ -1,0 +1,17 @@
+.github
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
+
+*.o
+*.d
+*.a
+*.lib
+*.pef
+*.APPL
+*.bin
+*.dsk
+**/.finf/
+**/.rsrc/
+

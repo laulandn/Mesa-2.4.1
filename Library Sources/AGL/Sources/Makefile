@@ -17,11 +17,13 @@ OBJS=$(subst .c,.o,$(wildcard *.c))
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 
+all: $(OBJS)
+	make -C aglDD
+
 lib: $(OBJS)
-	$(AR) rcv lib$(LIBNAME).a $(OBJS)
+	$(AR) rcv lib$(LIBNAME).a *.o */*.o
 	$(RANLIB) lib$(LIBNAME).a
 
-all: $(OBJS)
-
 clean:
+	make -C aglDD clean
 	rm -f *.o */*.o

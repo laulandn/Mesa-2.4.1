@@ -1,0 +1,11 @@
+m68k-apple-macos-gcc -I../../../Headers -I../../GL/Sources -c -o aglNewAdditions.o aglNewAdditions.c
+m68k-apple-macos-ar rcv libagl.a aglApi.o aglContext.o aglError.o aglFont.o aglMemUtil.o aglMesaError.o aglNewAdditions.o aglPixelFormat.o
+r - aglApi.o
+r - aglContext.o
+r - aglError.o
+r - aglFont.o
+r - aglMemUtil.o
+r - aglMesaError.o
+a - aglNewAdditions.o
+r - aglPixelFormat.o
+m68k-apple-macos-ranlib libagl.a

@@ -10,14 +10,18 @@ all:
 	make -C AGL/Sources
 	make -C GL/Sources
 	make -C GLU/Sources
-	make -C AUX?TK/Source
-	make -C Stub?Libs
-	make -C GLUT/Source?Common
-	make -i -C GLUT/Source?Mac
+	make -C AUX:TK/Source
+	make -C Stub\ Libs
+	make -C GLUT/Source\ Common
+	make -i -C GLUT/Source\ Mac
 	
 lib:
 	$(AR) rcv libOpenGLLibrary.a AGL/Sources/*.o AGL/Sources/aglDD/*.o GL/Sources/*.o
 	$(RANLIB) libOpenGLLibrary.a
+	$(AR) rcv libOpenGLUtility.a GLU/Sources/*.o
+	$(RANLIB) libOpenGLUtility.a
+	$(AR) rcv libglut.a GLUT/Source\ Common/*.o GLUT/Source\ Mac/*.o
+	$(RANLIB) libOpenGLUtility.a
 
 clean:
 	rm -f *.a

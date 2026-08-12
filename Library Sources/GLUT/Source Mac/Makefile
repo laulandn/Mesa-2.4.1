@@ -9,12 +9,17 @@ RANLIB=m68k-apple-macos-ranlib
 #AR=powerpc-apple-macos-ar
 #RANLIB=powerpc-apple-macos-ranlib
 
-CFLAGS= -I../../../Headers -I../Source\ Mac
+CFLAGS= -I../../../Headers -I../Source\ Mac -I$(HOME)/PowerPlant/Commander\ Classes -I$(HOME)/PowerPlant/Feature\ Classes -I$(HOME)/PowerPlant/PowerPlant\ Headers -I$(HOME)/PowerPlant/Utility\ Classes -I$(HOME)/PowerPlant/Array\ Classes -I$(HOME)/PowerPlant/AppleEvent\ Classes -I$(HOME)/PowerPlant/Support\ Classes -I$(HOME)/PowerPlant/Pane\ Classes
 
-OBJS=$(subst .c,.o,$(wildcard *.c))
+OBJS=$(subst .c,.o,$(wildcard *.c)) $(subst .cp,.o,$(wildcard *.cp))
+
+.SUFFIXES: .cp
 
 .c.o:
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CXX) $(CFLAGS) -c -o $@ $<
+
+.cp.o:
+	$(CXX) $(CFLAGS) -c -o $@ $<
 
 
 lib: $(OBJS)

@@ -1,8 +1,12 @@
 
-CC=powerpc-apple-macos-gcc
-#CC=m68k-apple-macos-gcc
-CXX=powerpc-apple-macos-g++
-#CXX=m68k-apple-macos-g++
+CC=m68k-apple-macos-gcc
+CXX=m68k-apple-macos-g++
+AR=m68k-apple-macos-ar
+RANLIB=m68k-apple-macos-ranlib
+#CC=powerpc-apple-macos-gcc
+#CXX=powerpc-apple-macos-g++
+#AR=powerpc-apple-macos-ar
+#RANLIB=powerpc-apple-macos-ranlib
 
 
 CFLAGS= -I../../../../Headers -I../../../GL/Sources -I..

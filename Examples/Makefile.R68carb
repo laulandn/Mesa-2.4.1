@@ -1,0 +1,24 @@
+
+all:
+	make -f Makefile.r68carb -i -C Chess
+	make -f Makefile.r68carb -i -C Glutmech
+	make -f Makefile.r68carb -i -C Geoface
+	make -f Makefile.r68carb -i -C Ideas
+	make -f Makefile.r68carb -i -C OpenGL\ logo
+	make -f Makefile.r68carb -i -C Rollercoaster
+	make -f Makefile.r68carb -i -C UnderWater
+	make -f Makefile.r68carb -i -C Walker
+	make -f Makefile.r68carb -i -C Sample
+	
+clean:
+	make -f Makefile.r68carb -i -C Chess clean
+	make -f Makefile.r68carb -i -C Glutmech
+	make -f Makefile.r68carb -i -C Geoface
+	make -f Makefile.r68carb -i -C Ideas clean
+	make -f Makefile.r68carb -i -C OpenGL\ logo clean
+	make -f Makefile.r68carb -i -C Rollercoaster clean
+	make -f Makefile.r68carb -i -C UnderWater clean
+	make -f Makefile.r68carb -i -C Walker clean
+	make -f Makefile.r68carb -i -C Sample clean
+	rm -rf */*.o
+	rm -rf */*\ Data

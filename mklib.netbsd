@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Make a NetBSD shared library
+# contributed by Michael Graff (explorer@flame.org)
+# updated by Jarkko Hietaniemi (jarkko.hietaniemi@research.nokia.com)
+
+# First argument is name of output library
+# Rest of arguments are object files
+
+set -x
+
+LIBRARY=`echo $1 | sed 's/\.so\.[0-9]*\.[0-9]$//`
+
+shift 1
+OBJECTS=$*
+
+VERSION="2.4"
+
+echo "Building PIC library $LIBRARY"
+rm -f ${LIBRARY}_pic.a ${LIBRARY}.so.${VERSION}
+ar cq ${LIBRARY}_pic.a ${OBJECTS}
+ranlib ${LIBRARY}_pic.a
+
+ld -x -Bshareable -Bforcearchive -o ${LIBRARY}.so.${VERSION} ${LIBRARY}_pic.a
+
+cp ${LIBRARY}_pic.a ${LIBRARY}.so.${VERSION} ../lib
+
+

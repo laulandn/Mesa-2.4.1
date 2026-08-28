@@ -91,9 +91,9 @@ extern "C" {
 /* 
  * A QuickHack for programs wich uses drand48:
  */
-#ifndef drand48
-	#define drand48()	(rand()*1.0/(1.0*RAND_MAX))
-#endif
+//#ifndef drand48
+//	#define drand48()	(rand()*1.0/(1.0*RAND_MAX))
+//#endif
 
 /* Display mode bit masks. */
 #define GLUT_RGB			0
@@ -112,6 +112,8 @@ extern "C" {
 #if (GLUT_API_VERSION >= 3)
 #define GLUT_LUMINANCE			512
 #endif
+
+#define GLUT_FULLSCREEN		1024
 
 /* Mouse buttons. */
 #define GLUT_LEFT_BUTTON		0

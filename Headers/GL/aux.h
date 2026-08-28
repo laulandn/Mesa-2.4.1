@@ -52,6 +52,9 @@ extern "C" {
 #include <gl.h>
 #include <glu.h>
 
+#include <MacWindows.h>
+
+
 /*
 ** ToolKit Window Types
 ** In the future, AUX_RGBA may be a combination of both RGB and ALPHA

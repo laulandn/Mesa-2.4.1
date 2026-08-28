@@ -54,6 +54,7 @@
 
 #include "aglDDUtil.h"
 #include "aglDD_RAVE.h"
+#include "aglDDArgs.h"
 
 /* Mesa */
 #include "types.h"
@@ -65,7 +66,7 @@
 #define RAVEFixedToFloat(X) ((X >> 8) * 0.00048828125f)
 
 #define MESA_COLOR_TO_RGB(rgb,r,g,b,a) { rgb.red = r << 8; rgb.green = g << 8; rgb.blue = b << 8;}
-#define GET_PRIVATE_DATA(ctx,myPrivate)	TQDDriverPrivate* myPrivate = (TQDDriverPrivate*)(((AGLContext) ctx->DriverCtx)->driverPrivate); 
+#define GET_PRIVATE_DATA(ctx,myPrivate)	TRADriverPrivate* myPrivate = (TRADriverPrivate*)(((AGLContext) ctx->DriverCtx)->driverPrivate); 
 
 
 static GLboolean gDriverInstalled; 
@@ -78,6 +79,16 @@ extern void gl_Viewport( GLcontext *ctx,
 static void __aglDDCacheColorQD( GLcontext *ctx )
 {
 	/* TODO */
+}
+
+
+void DDUSetPort(AGLDrawable drawable,void *mystery,AGLDrawable *savePort)
+{
+}
+
+
+void DDURestorePort(AGLDrawable *drawable)
+{
 }
 
 
@@ -311,7 +322,7 @@ static GLboolean RASetBuffer( GLcontext *ctx, GLenum mode )
  	{
  		if (myPrivate->pixFmt.doubleBuffer) 
  		{
- 			__aglSetGLError(ctx->DriverCtx,GL_INVALID_OPERATION,"RAVE Driver can't draw to the front buffer of a double buffered context!");
+ 			AGLSetGLError(ctx->DriverCtx,GL_INVALID_OPERATION,"RAVE Driver can't draw to the front buffer of a double buffered context!");
  		}
  	}
  	else if (mode == GL_BACK && myPrivate->pixFmt.doubleBuffer)
@@ -320,7 +331,7 @@ static GLboolean RASetBuffer( GLcontext *ctx, GLenum mode )
  	}
  	else
  	{
- 		__aglSetGLError(ctx->DriverCtx,GL_INVALID_OPERATION,"Invalid operation in __aglDD_SetBuffer!");
+ 		AGLSetGLError(ctx->DriverCtx,GL_INVALID_OPERATION,"Invalid operation in __aglDD_SetBuffer!");
  		return GL_FALSE;
  	}
  	
@@ -379,7 +390,7 @@ static void RAClear( 	GLcontext *ctx,									/* Draw context */
 						GLint x, GLint y, GLint width, GLint height)	/* Area to clear */
 {
 	Rect 					clearRect;
-	TDDUPortSave 			portSave;
+	//TDDUPortSave 			portSave;
 	TRADriverPrivate		*myPrivate;
 	
 	myPrivate = (TRADriverPrivate *) ctx->DriverCtx;
@@ -398,7 +409,7 @@ static void RAClear( 	GLcontext *ctx,									/* Draw context */
 	}
 	
 	
-	QARenderStart(myPrivate->drawContext,&myRect,NULL);
+	QARenderStart(myPrivate->drawContext,(TQARect *)&clearRect,NULL);
 }
 
 
@@ -443,7 +454,7 @@ static void RAWriteColorSpan( AGL_WRITE_COLOR_SPAN_PARAM )
 /***********************************************************************************************
  * C32ReadColorSpanRGB: Read a horizontal run of RGB pixels.
  ***********************************************************************************************/
-static void C32ReadColorSpanRGB( GLcontext *ctx,
+static void RAReadColorSpanRGB( GLcontext *ctx,
                              	 GLuint n, GLint x, GLint y,
                              	 GLubyte red[], GLubyte green[],
                              	 GLubyte blue[], GLubyte alpha[] )
@@ -454,7 +465,7 @@ static void C32ReadColorSpanRGB( GLcontext *ctx,
 /***********************************************************************************************
  * C32ReadColorSpanRGB: Read a random array of RGB pixels.
  ***********************************************************************************************/
-static void C32ReadColorPixelRGB( GLcontext *ctx,
+static void RAReadColorPixelRGB( GLcontext *ctx,
                                	  GLuint n, const GLint x[], const GLint y[],
                               	  GLubyte red[], GLubyte green[],
                                	  GLubyte blue[], GLubyte alpha[],
@@ -622,10 +633,10 @@ static AGLPixelFmt RAChooseMode(
 	 */
 	{
 		TQADevice 	device;
-		TQAEngine	engine;
+		TQAEngine	*engine;
 		
 		device.deviceType 		= kQADeviceGDevice;
-		device.device.gDevice 	= GetGWorldDevice(inPixFmtReq->drawable);
+		device.device.gDevice 	= *(inPixFmtReq->dev)/*GetGWorldDevice(inPixFmtReq->drawable)*/;
 	
 		/*
 	 	 * TODO: select the best engine and return it's speed.
@@ -659,7 +670,7 @@ static GLboolean RAInitializeContext(
 				 const AGLPixelFmt	pixFmt,		/* Selected pixel-format */	
 				 const AGLDrawable	drawable)	/* Target drawable */
 {
-	TC32DriverPrivate *newDriverPrivate;
+	TRADriverPrivate *newDriverPrivate;
 	long			 width, height;
 	Rect			 rect;
 	
@@ -673,7 +684,7 @@ static GLboolean RAInitializeContext(
 	 * Allocate the TDDDiverPrivate structure.
 	 */
 
-	newDriverPrivate = (TC32DriverPrivate *) AGLMemoryNewClear( sizeof( TC32DriverPrivate));
+	newDriverPrivate = (TRADriverPrivate *) AGLMemoryNewClear( sizeof( TRADriverPrivate));
 	if (newDriverPrivate == NULL) 
 	{
 		AGLSetGLError(aglCtx,GL_OUT_OF_MEMORY,"RAInitializeContext: Out of memory!");
@@ -709,10 +720,10 @@ static GLboolean RAInitializeContext(
 		Point		topLeft, botRight;
 		TQARect 	drawableRect;
 		TQAError 	status;
-		TQARect		drawableRect;
 		TQADevice	device;
 		long		flags;
-		
+    AGLDrawable	 savePort;
+    
 		
 		/*
 		 * Set the flags (TODO)
@@ -738,35 +749,34 @@ static GLboolean RAInitializeContext(
 		DDURestorePort(&savePort);
 		
 		/*
-		 * Create the bound rectangle in device coordinates.
-		 */
-					
-		drawableRect.top = topLeft.v - (*gGDevice)->gdRect.top;
-		drawableRect.left = topLeft.h - (*gGDevice)->gdRect.left;
-		drawableRect.bottom = botRight.v - (*gGDevice)->gdRect.top;
-		drawableRect.right = botRight.h - (*gGDevice)->gdRect.left;
-		
-		
-		/*
 		 * Create a rave device.
 		 */
 			
 		device.deviceType = kQADeviceGDevice;
 		device.device.gDevice = GetGWorldDevice(drawable);
+
+		/*
+		 * Create the bound rectangle in device coordinates.
+		 */
+					
+		drawableRect.top = topLeft.v - (*device.device.gDevice)->gdRect.top;
+		drawableRect.left = topLeft.h - (*device.device.gDevice)->gdRect.left;
+		drawableRect.bottom = botRight.v - (*device.device.gDevice)->gdRect.top;
+		drawableRect.right = botRight.h - (*device.device.gDevice)->gdRect.left;
+		
 		
 		/*
 		 * Choose a RAVE engine (TODO select the best):
 		 */
-		{
 			TQAEngine	*myEngine;
-			
+		{			
 			myEngine = (TQAEngine*)(pixFmt->driverData[0]);
 			newDriverPrivate->engine = myEngine;
 			
 			/*
 			 * Chech if selected engine supports the drawable.
 			 */ 
-			status = QAEngineCheckDevice(myEngine,device);
+			status = QAEngineCheckDevice(myEngine,&device);
 			
 			if (status != kQANoErr)
 			{
@@ -780,8 +790,8 @@ static GLboolean RAInitializeContext(
 		 * Create the draw context.
 		 */
 		 
-		status = QADrawContextNew (&device, &windowRect,
-				NULL, engine , flags, newDriverPrivate->drawContext);
+		status = QADrawContextNew (&device, &drawableRect,
+				NULL, myEngine , flags, &newDriverPrivate->drawContext);
 		
 		if (status != kQAError)
 		{
@@ -868,7 +878,7 @@ static GLboolean RADestroyContext(
 	if (myPrivate->drawContext != NULL)
 	{
 		QADrawContextDelete(myPrivate->drawContext);
-		myPrivate->drawContex = NULL;
+		myPrivate->drawContext = NULL;
 	}
 	
 	AGLMemoryDelete((AGLPtr)myPrivate);
@@ -878,7 +888,7 @@ static GLboolean RADestroyContext(
 	return GL_TRUE;
 }
 
-extern GLboolean RAVEGetPixelFmtData(UInt32 inMode, TDDPixelFmt *outPixFmtRec);
+extern GLboolean RAVEGetPixelFmtData(UInt32 inMode, AGLPixelFmt *outPixFmtRec);
 
 /************************************************************************************************
  * Converts pixelformat to driver mode.
@@ -886,13 +896,13 @@ extern GLboolean RAVEGetPixelFmtData(UInt32 inMode, TDDPixelFmt *outPixFmtRec);
  * this driver to be used for only 16 and 32 bit/pixel devices.
  ***********************************************************************************************/
 
-GLboolean RAVEChooseMode(TDDPixelReq *inPixFmtReq, 	/* Minimal pixel format */
+GLboolean RAVEChooseMode(TAGLPixelFmtReq *inPixFmtReq, 	/* Minimal pixel format */
 							 TDDSpeed *outSpeed,	/* The speed of this driver  */ 
 							 UInt32 *outMode)		/* Mode to be returned */
 {
 	GLboolean	succes;
 	UInt8 		result 		= 0;
-	TDDPixelReq pixFmtRec 	= *inPixFmtReq;
+	TAGLPixelFmtReq pixFmtRec 	= *inPixFmtReq;
 	
 	/*
 	 * STEP 1: return GL_FALSE for unsupportted modes.
@@ -961,7 +971,7 @@ GLboolean RAVEChooseMode(TDDPixelReq *inPixFmtReq, 	/* Minimal pixel format */
  * Returns the format description in outPixFmtRec.
  ***********************************************************************************************/
 GLboolean RAVEGetPixelFmtData(const UInt32 		inMode, 		/* Mode to be converted */
-							TDDPixelFmt 		*outPixFmtRec)	/* PixelFormat to be returned */ 
+							TAGLPixelFmt 		*outPixFmtRec)	/* PixelFormat to be returned */ 
 {
 	/*
 	 * This is the default for most of drivers.
@@ -975,7 +985,7 @@ GLboolean RAVEGetPixelFmtData(const UInt32 		inMode, 		/* Mode to be converted *
  ***********************************************************************************************/
 static GLboolean RAVEInitializeContext(
 		AGLContext 			aglCtx,			/* Draw context to initialize */
-		const TDDPixelReq 	*pixFmt,		/* Pixel format */
+		const TAGLPixelFmtReq 	*pixFmt,		/* Pixel format */
 		const CGrafPtr  	drawable		/* Target drawable */
 		)
 {
@@ -986,7 +996,7 @@ static GLboolean RAVEInitializeContext(
 	TQAError		 error;
 	TQARect			 myRect;
 	GDHandle		 gDeviceHandle;
-	TQDDriverPrivate *newDriverPrivate;
+	TRADriverPrivate *newDriverPrivate;
 	long			 width, height;
 	long			 flags;
 	Rect			 rect;
@@ -1001,7 +1011,7 @@ static GLboolean RAVEInitializeContext(
 	 * Allocate the TDDDiverPrivate structure.
 	 */
 
-	newDriverPrivate = (TQDDriverPrivate *) NewPtrClear ( sizeof( TQDDriverPrivate));
+	newDriverPrivate = (TRADriverPrivate *) NewPtrClear ( sizeof( TRADriverPrivate));
 	if (newDriverPrivate == NULL) 
 	{
 		return (GL_FALSE); 
@@ -1141,7 +1151,7 @@ static GLboolean RAVEInitializeContext(
 
 static GLboolean RAVESwapBuffers(AGLContext aglCtx, AGLDrawable drawable)
 {
-	TQDDriverPrivate *myPrivate = (TQDDriverPrivate*) aglCtx->driverPrivate;
+	TRADriverPrivate *myPrivate = (TRADriverPrivate*) aglCtx->driverPrivate;
 	TQAError	error;
 	
 	__aglAssert(myPrivate);
@@ -1171,7 +1181,7 @@ static GLboolean RAVESwapBuffers(AGLContext aglCtx, AGLDrawable drawable)
 static GLboolean RAVEDestroyContext(
 		TDDDriverPrivate *driverPrivate) 	/* Private context data to delete */
 {
-	TQDDriverPrivate *myPrivate = (TQDDriverPrivate*) driverPrivate;
+	TRADriverPrivate *myPrivate = (TRADriverPrivate*) driverPrivate;
 	
 	__aglAssert(driverPrivate);
 	
@@ -1219,7 +1229,7 @@ static GLboolean RAVEDrawableChanged( const AGLContext aglCtx,
 									const GLboolean posChanged, 		/* Is the pos changed? */
 									const GLboolean sizeChanged )		/* Is the size changed? */
 {
-  TQDDriverPrivate *myPrivate = (TQDDriverPrivate*) aglCtx->driverPrivate;
+  TRADriverPrivate *myPrivate = (TRADriverPrivate*) aglCtx->driverPrivate;
   AGLDrawable drawable = myPrivate->drawable;
   Rect rect;
   

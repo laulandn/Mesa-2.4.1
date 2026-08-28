@@ -1,0 +1,69 @@
+
+
+Future plans for Mesa.  Device driver maintainers take notice.
+Comments on this stuff are welcome.
+
+
+
+1. Change device driver interface's function which take separate arrays of
+   red, green, blue and alpha values to take array [n][4] of color components
+   instead.  For example:
+
+   Currently:
+
+   void (*WriteColorSpan)( GLcontext *ctx,
+                           GLuint n, GLint x, GLint y,
+			   const GLubyte red[], const GLubyte green[],
+			   const GLubyte blue[], const GLubyte alpha[],
+			   const GLubyte mask[] );
+
+   Future:
+
+   void (*WriteColorSpan)( GLcontext *ctx,
+                           GLuint n, GLint x, GLint y,
+			   const GLubyte rgba[][4],
+			   const GLubyte mask[] );
+
+   Reason:
+   We can directly send GL_UNSIGNED_BYTE, GL_RGBA glDrawPixels data to
+   the later function.  Also, the device driver functions may be able to poke
+   the 4-byte color directly to a 32-bpp frame buffer if the buffer's byte
+   ordering matches the RGBA order.  Otherwise, simple byte flipping within
+   the word may be needed.  We can possibly replace four 1-byte loads with
+   one 1-word store.  Maybe get better cache usage too.
+
+   This will require changing all the device drivers, BTW.
+
+
+2. The glaux/gltk Mesa demos will be retired in a future release.  The glaux
+   and gltk libraries are hacks.  GLUT should be used instead.  GLUT includes
+   many demos including GLUT versions of many of the glaux/gltk demos.  Also,
+   the OpenGL Programming Guide book now uses GLUT.
+
+
+3. Put Mesa device driver files into separate directories, such as:
+	src/xmesa/
+	src/glx/
+	src/osmesa/
+	src/windows/
+	src/3dfx/
+	src/svga/
+	etc...
+
+
+4. Move README's X11-specific info into a README.X11 file.
+
+
+5. Make use of the src/hash.[ch] code for display list and texture
+   object lookup.
+
+
+6. Optimize glDrawPixels, esp GL_UNSIGNED_BYTE GL_RGBA and
+   GL_COLOR_INDEX formats.
+
+
+7. Pentium FP optimization (set FPU to lower precision where possible).
+
+
+8. Retire the glaux/gltk toolkits.  Replace with GLUT.
+

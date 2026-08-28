@@ -1,0 +1,70 @@
+***************************************************************
+*              Readme file for WMesa-2.3                      *	
+*                                                             *
+*                        By                                   *
+*                      Li Wei                                 *
+*       Institute of Artificial Intelligence & Robotics       *
+*       Xi'an Jiaotong University                             *
+*       Email: liwei@aiar.xjtu.edu.cn                         * 
+*       Web page: http://sun.aiar.xjtu.edu.cn                 *
+*                                                             *
+*	       July 7th, 1997				      *	
+***************************************************************
+
+WMesa-2.3 is the Windows version of Brian Paul's Mesa-2.3, an OpenGL like, 3-D graphics library.( refer to the reademe.original_mesa.txt)
+
+WMesa-2.3 is distributed in three types:
+To get
+1. All the source code
+	download wmesa-2.3.src.zip
+2. Binaries of libraries that can be linked to OpenGL application in 	download wmesa-2.3.binaries.zip
+3. Only the files needed by WMesa and not included in Brian's Mesa
+	download wmesa-2.3.minimal.zip
+
+
+Features:
+1. WMesa-2.3 works on Windos 95, Windows NT 3.51 and Windows NT 4.0
+2. WMesa-2.3 can render stereo graphics that support Head Mounted Displays such Virtual I/O's I-glasses.
+3. WMesa takes the advantage of Microsoft Direct Draw, hence can dynamically change display mode as well as using the screen exclusively.
+4. Many accelaration functions for  rendering triangle added, now the rendering speed is much faster.(As fast as the mesa run in Linux.)
+
+Platforms:
+Display with DibSection works for Windows 95 , Windows NT 3.51 or Windows NT 4.0.
+Display with Direct Draw works for Windows 95 and Windows NT 4.0 with Direct Draw installed.
+WinG is required if dither feature desired.
+
+Installation:
+
+1. From the source files
+Extract all the files with directory name included
+Compile the four libraries: winmesa.lib, tk.lib, winglu.lib and glaux.lib. by opening and building the *.mak files in \mesa-2.3\msvc. Before compiling, add \mesa-2.3\include to the list of include directories. By default, the *.lib files are put at \mesa-2.3\lib
+
+2. From binaries
+Extract all the libraries with directory name included. By default, the *.lib files are put at \mesa-2.3\lib
+
+3. From the minimal package
+First download and extract Brian Paul's Mesa-2.3. Then extract wmesa-2.3.minmal.zip, overlab all the files with same name. Then build the libraries and demos as the procedure of building from source files.
+
+4. To use Direct Draw
+copy ddmesa.ini to the root directry of Windows.
+
+================================================================================================
+
+Notes:
+To work in Direct Draw mode, add macro DDRAW as a variable of compiler and add ddraw.lib to the linking libraries.  By default, the macro is undefined.
+
+In Windows 95, if direct draw used, applications can not be debugged in MSDEV with breakpoints set.
+
+In both Windows 95 and Windows NT, if fullscreen mode specified, applications can not be debugged in MSDEV with breakpoints set.
+
+The driver is mainly designed for double buffer, hence the performance for single buffer mode is not changed.( very slow). Single buffer is not supported in color index mode.
+Color index mode only works by setting the display to 256-color mode, either by using the Control Panel of Windows or by editing the initializtion file. 
+
+When the setting of display mode by direct draw failed, the driver will just given an error message in the console and try to use the current display mode.
+
+Wing is required to surpport dither operation. If you don't like it, define macro NO_DITHER for compiler, then the driver can be compiled without bothout wing.h and wing32.lib, and can run without wing32.dll. A simple package of Wing is available on the same ftp site.(ftp://sun.aiar.xjtu.edu.cn/pub/ddmesa/wing.simple.zip
+
+
+If any bugs different from the above detected, please inform me.
+
+

@@ -1,0 +1,31 @@
+***************************************************************
+*              Readme file for demos of WMesa-2.3             *	
+*                                                             *
+*              By Li Wei (liwei.aiar.xjtu.edu.cn)             *
+*	       July 7th, 1997				      *	
+***************************************************************
+
+Four *.lib files (winmesa.lib, tk.lib, winglu.lib and glaux.lib) are required to build any demo applications. These libraries can be obained by either downloading the wmesa-2.3.binary.zip or by building through the src files.
+By default the *.lib files will be put at mesa-2.3\lib.
+
+After all the libraries are available, do the following:
+1. Set include directry and link directry in Microsoft Devloper Studio.
+Add mesa-2.3\include to the list of include directory. 
+NOTE! mesa-2.3\include should be put before any other directories that contain       files named gl.h. 
+Add mesa-2.3\lib or any directory where you put the libraries to the list of link directory.
+
+2. Open one of the *.mak files in Microsoft devloper studio, click the build button.
+
+How to build other OpenGL demos?
+
+wmesa-2.3 has been tested with a lot of OpenGL demos. However, for reducing the size of the src.zip file, only a few was included in the package. The file Mesa-2.3.demo.tar.gz contains all the demos files, most of them can be built with the libraries of wmesa-2.3, with a few exceptions that require specific function of X.
+
+To build other demos, make a copy of one of the make files in the demo directry, delete the *.c file in the project, insert the new *.c file that you are willing to build. Then compile.
+
+==========================================================================
+NOTE! 
+
+The *.mak files are created with Microsoft Visual C++ 4.2, and should would work with VC 4.x or above.
+
+The olympic.c is modified to make it compilable in Windows.
+

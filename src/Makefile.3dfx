@@ -1,0 +1,225 @@
+CFLAGS	      = /O2 /D__MSC__ /DFX /DWIN32 /I..\include \
+		 /Ic:\3Dfx\glide\src\SST1\include
+
+DEST	      = .
+
+EXTHDRS	      =
+
+HDRS	      = accum.h \
+		alpha.h \
+		alphabuf.h \
+		api.h \
+		attrib.h \
+		bitmap.h \
+		blend.h \
+		clip.h \
+		colors.h \
+		config.h \
+		context.h \
+		copypix.h \
+		dd.h \
+		depth.h \
+		dlist.h \
+		drawpix.h \
+		enable.h \
+		eval.h \
+		feedback.h \
+		fixed.h \
+		fog.h \
+		fxmesa.h \
+		hash.h \
+		get.h \
+		image.h \
+		light.h \
+		lines.h \
+		logic.h \
+		macros.h \
+		masking.h \
+		matrix.h \
+		misc.h \
+		pb.h \
+		pixel.h \
+		pointers.h \
+		points.h \
+		polygon.h \
+		readpix.h \
+		scissor.h \
+		span.h \
+		stencil.h \
+		teximage.h \
+		texobj.h \
+		texture.h \
+		triangle.h \
+		tritemp.h \
+		types.h \
+		varray.h \
+		vb.h \
+		winpos.h \
+		xform.h \
+		xmesaP.h
+
+INSTALL	      = cp
+
+LD	      = $(CC)
+
+LDFLAGS	      =
+
+LIBS	      =
+
+MAKEFILE      = Makefile
+
+OBJS	      = accum.obj \
+		alpha.obj \
+		alphabuf.obj \
+		api1.obj \
+		api2.obj \
+		attrib.obj \
+		bitmap.obj \
+		blend.obj \
+		clip.obj \
+		cmesa.obj \
+		context.obj \
+		copypix.obj \
+		depth.obj \
+		dlist.obj \
+		dosmesa.obj \
+		drawpix.obj \
+		enable.obj \
+		eval.obj \
+		feedback.obj \
+		fog.obj \
+		fxmesa.obj \
+		hash.obj \
+		get.obj \
+		image.obj \
+		light.obj \
+		lines.obj \
+		logic.obj \
+		masking.obj \
+		mmath.obj \
+		matrix.obj \
+		misc.obj \
+		osmesa.obj \
+		pb.obj \
+		pixel.obj \
+		pointers.obj \
+		points.obj \
+		polygon.obj \
+		quads.obj \
+		rastpos.obj \
+		readpix.obj \
+		rect.obj \
+		scissor.obj \
+		shade.obj \
+		span.obj \
+		stencil.obj \
+		svgamesa.obj \
+		teximage.obj \
+		texobj.obj \
+		texstate.obj \
+		texture.obj \
+		triangle.obj \
+		varray.obj \
+		vb.obj \
+		vbfill.obj \
+		vbrender.obj \
+		vbxform.obj \
+		winpos.obj \
+		xform.obj
+
+PRINT	      = pr
+
+PROGRAM       = ..\lib\vgl.lib
+
+SHELL	      = /bin/sh
+
+SRCS	      = accum.c \
+		alpha.c \
+		alphabuf.c \
+		api1.c \
+		api2.c \
+		attrib.c \
+		bitmap.c \
+		blend.c \
+		clip.c \
+		cmesa.c \
+		context.c \
+		copypix.c \
+		depth.c \
+		dlist.c \
+		dosmesa.c \
+		drawpix.c \
+		enable.c \
+		eval.c \
+		feedback.c \
+		fog.c \
+		fxmesa.c \
+		hash.c \
+		get.c \
+		image.c \
+		light.c \
+		lines.c \
+		logic.c \
+		masking.c \
+		matrix.c \
+		mmath.c \
+		misc.c \
+		osmesa.c \
+		pb.c \
+		pixel.c \
+		pointers.c \
+		points.c \
+		polygon.c \
+		quads.c \
+		rastpos.c \
+		readpix.c \
+		rect.c \
+		scissor.c \
+		shade.c \
+		span.c \
+		stencil.c \
+		svgamesa.c \
+		teximage.c \
+		texobj.c \
+		texstate.c \
+		texture.c \
+		triangle.c \
+		varray.c \
+		vb.c \
+		vbfill.c \
+		vbrender.c \
+		vbxform.c \
+		winpos.c \
+		xform.c
+
+
+.c.o:
+		$(CC) $(CFLAGS) -c $<
+
+all:		$(PROGRAM)
+
+$(PROGRAM):     $(OBJS) $(LIBS)
+		@echo "Linking $(PROGRAM) ..."
+		lib  /verbose /OUT:$(PROGRAM) $(OBJS)
+		@echo "done"
+
+clean:;		@rm -f $(OBJS) core
+
+clobber:;	@rm -f $(OBJS) $(PROGRAM) core tags
+
+depend:;	@mkmf -f $(MAKEFILE)
+
+echo:;		@echo $(HDRS) $(SRCS)
+
+index:;		@ctags -wx $(HDRS) $(SRCS)
+
+install:	$(PROGRAM)
+		@echo Installing $(PROGRAM) in $(DEST)
+		@-strip $(PROGRAM)
+		@if [ $(DEST) != . ]; then \
+		(rm -f $(DEST)/$(PROGRAM); $(INSTALL) $(PROGRAM) $(DEST)); fi
+
+print:;		@$(PRINT) $(HDRS) $(SRCS)
+
+tags:           $(HDRS) $(SRCS); @ctags $(HDRS) $(SRCS)
+###

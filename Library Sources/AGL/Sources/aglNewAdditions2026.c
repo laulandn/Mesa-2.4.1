@@ -1,6 +1,13 @@
 /* These are functions that were new for later versions of AGL */
 /* this is a massive hack */
 
+
+/* For now... */
+#ifndef DEBUG
+#define DEBUG
+#endif
+
+
 #include <stdio.h>
 
 #include <agl.h>
@@ -8,13 +15,6 @@
 #include "aglPixelFormat.h"
 #include "aglPixelFormat.h"
 #include "aglContext.h"
-
-
-/*
-typedef struct AGLPixelFormat
-{
-} AGLPixelFormat;
-*/
 
 
 extern AGLPixelFmt DDChoosePixelFmt(TAGLPixelFmtReq *req);
@@ -25,17 +25,41 @@ extern void glGetIntegerv_old( GLenum pname, GLint *params );
 const GLubyte * glGetString_old( GLenum name );
 
 
-#define AGLPixelFormat int
-#define AGLDevice int
+//#define AGLPixelFormat int
+//#define AGLDevice int
 
 
-AGLContext myContext=NULL;
 int pixelSizeTheyAskedFor=16;
 int depthSizeTheyAskedFor=16;
 int stencilSizeTheyAskedFor=16;  /* Is this sane? */
 int swapIntervalTheyAskedFor=16;  /* Is this sane? */
 
+// These are used in case someone tries to choose a pixel format without attributes
+GLint myAttribs[] = { AGL_RGBA,AGL_PIXEL_SIZE,16,AGL_RED_SIZE,5,AGL_GREEN_SIZE,5,AGL_BLUE_SIZE,5,AGL_NONE };
 
+
+GLboolean aglDisable(AGLContext ctx, GLenum pname)
+{
+  fprintf(stderr,"aglDisable %d...not implemented\n",pname); fflush(stderr);
+  return true;
+}
+
+
+GLboolean aglSetOffScreen(AGLContext ctx, int w, int h, int rowbytes, void *baseaddr)
+{
+  fprintf(stderr,"aglSetOffScreen %d x %d rowbytes=%d...not implemented\n",w,h,rowbytes); fflush(stderr);
+  return __aglMakeCurrent(ctx->drawable,ctx);
+}
+
+
+GLboolean aglSetFullScreen(AGLContext ctx, int w, int h, int freq, int dev)
+{
+  fprintf(stderr,"aglSetFullScreen %d x %d and %d and %d...not implemented\n",w,h,freq,dev); fflush(stderr);
+  return __aglMakeCurrent(ctx->drawable,ctx);
+}
+
+
+/* Copy of original with added modern attributes */
 AGLPixelFmt __aglChoosePixelFmt2026(GDHandle *dev,int ndev,int *attribs)
 {
 	int 			parseCmd,currentCmd;
@@ -44,6 +68,9 @@ AGLPixelFmt __aglChoosePixelFmt2026(GDHandle *dev,int ndev,int *attribs)
 	TAGLPixelFmtReq 	pixFmtReq;
 	AGLPixelFmt 		pixFmt;
 	
+#ifdef DEBUG
+fprintf(stderr,"Called my __aglChoosePixelFmt2026...\n"); fflush(stderr);
+#endif
 	/*
 	 * Set the default values:
 	 */
@@ -202,6 +229,11 @@ AGLPixelFmt __aglChoosePixelFmt2026(GDHandle *dev,int ndev,int *attribs)
             /* Fine with us, ignoring */
             break;
             
+          case AGL_OFFSCREEN:
+            /* Sure!  We can do offscreen...sure, sure... */
+            /* TODO: May want to hide that the user is asking for this from DDChoosePixelFmt... */
+            break;
+            
           case AGL_SWAP_INTERVAL:
       			currentCmd = *parseList++;  /* Is this right? */
             swapIntervalTheyAskedFor=currentCmd;
@@ -216,181 +248,26 @@ AGLPixelFmt __aglChoosePixelFmt2026(GDHandle *dev,int ndev,int *attribs)
   /*
    * Get the Pixel-Format from the driver manager.
    */
+#ifdef DEBUG
+fprintf(stderr,"Calling real DDChoosePixelFmt...\n"); fflush(stderr);
+#endif
   pixFmt = (AGLPixelFmt)DDChoosePixelFmt(&pixFmtReq);
   
+  if(!pixFmt) {
+fprintf(stderr,"DDChoosePixelFmt failed..\n"); fflush(stderr);
+  }
   return pixFmt;
-}
-
-
-GLboolean aglSetDrawable(AGLContext ctx, AGLDrawable draw)
-{
-  //fprintf(stderr,"aglSetDrawable...not implemented\n"); fflush(stderr);
-  return __aglMakeCurrent(draw,ctx);
-  //return true;
-}
-
-
-GLboolean aglSetCurrentContext(AGLContext ctx)
-{
-  //fprintf(stderr,"aglSetCurrentContext...not implemented\n"); fflush(stderr);
-  return __aglMakeCurrent(ctx->drawable,ctx);
-  //return true;
-}
-
-
-GLboolean aglUpdateContext(AGLContext ctx)
-{
-  fprintf(stderr,"aglUpdateContext...not implemented\n"); fflush(stderr);
-  return true;
-}
-
-
-GLboolean aglSetInteger(AGLContext ctx, GLenum pname,
-                               const GLint *params)
-{
-  switch(pname) {
-    case AGL_SWAP_INTERVAL:
-      swapIntervalTheyAskedFor=(int)*params;  /* Is this right? */
-      break;
-    default:
-      fprintf(stderr,"aglSetInteger pname=%d...not implemented\n",(int)pname); fflush(stderr);
-      break;
-  }
-  return true;
-}
-
-
-void glGetIntegerv( GLenum pname, GLint *params )
-{
-  /* TODO: Handle ones old Mesa can't or won't */
-  //fprintf(stderr,"FYI glGetIntegerv %d 0x%x\n",pname,pname); fflush(stderr);
-  glGetIntegerv_old(pname,params);
-  //fprintf(stderr,"FYI glGetIntegerv_old said %d 0x%x\n",*params,*params); fflush(stderr);
-  switch(pname) {
-    case 3410:
-      fprintf(stderr,"FYI glGetIntegerv is lying and we are saying SDL_GL_RED_SIZE 5\n"); fflush(stderr);
-      fprintf(stderr,"FYI glGetIntegerv_old said %d 0x%x\n",*params,*params); fflush(stderr);
-      *params=5;
-      break;
-    case 3411:
-      fprintf(stderr,"FYI glGetIntegerv is lying and we are saying SDL_GL_BLUE_SIZE 5\n"); fflush(stderr);
-      fprintf(stderr,"FYI glGetIntegerv_old said %d 0x%x\n",*params,*params); fflush(stderr);
-      *params=5;
-      break;
-    case 3412:
-      fprintf(stderr,"FYI glGetIntegerv is lying and we are saying SDL_GL_GREEN_SIZE 5\n"); fflush(stderr);
-      fprintf(stderr,"FYI glGetIntegerv_old said %d 0x%x\n",*params,*params); fflush(stderr);
-      *params=5;
-      break;
-    case 3414:
-      fprintf(stderr,"FYI glGetIntegerv is lying and we are saying SDL_GL_DEPTH 16\n"); fflush(stderr);
-      fprintf(stderr,"FYI glGetIntegerv_old said %d 0x%x\n",*params,*params); fflush(stderr);
-      *params=16;
-      break;
-    default:
-      /* Assume old Mesa answered correctly... */
-      break;
-  }
-}
-
-
-const GLubyte * glGetString( GLenum name )
-{
-  /* TODO: Handle ones old Mesa can't or won't */
-  char *ret=NULL;
-  /*fprintf(stderr,"FYI glGetString %d 0x%x\n",name,name); fflush(stderr);*/
-  ret=(char *)glGetString_old(name);
-  /*fprintf(stderr,"FYI glGetString_old said %s\n",ret); fflush(stderr);*/
-  switch(name) {
-    case GL_VENDOR:
-      fprintf(stderr,"FYI glGetString is lying and we are saying GL_VENDOR unknown\n"); fflush(stderr);
-      fprintf(stderr,"FYI glGetString_old said %s\n",ret); fflush(stderr);
-      ret="Unknown";
-      break;
-    case GL_RENDERER:
-      fprintf(stderr,"FYI glGetString is lying and we are saying GL_RENDERER unknown\n"); fflush(stderr);
-      fprintf(stderr,"FYI glGetString_old said %s\n",ret); fflush(stderr);
-      ret="Unknown";
-      break;
-    case GL_VERSION:
-      fprintf(stderr,"FYI glGetString is lying and we are saying  GL_VERSION unknown\n"); fflush(stderr);
-      fprintf(stderr,"FYI glGetString_old said %s\n",ret); fflush(stderr);
-      ret="Unknown";
-      break;
-    case GL_EXTENSIONS:
-      fprintf(stderr,"FYI glGetString is lying and we are saying GL_EXTENSIONS unknown\n"); fflush(stderr);
-      fprintf(stderr,"FYI glGetString_old said %s\n",ret); fflush(stderr);
-      ret="Unknown";
-      break;
-    default:
-      /* Assume old Mesa answered correctly... */
-      break;
-  }
-  return (const GLubyte *)ret;
-}
-
-
-void aglDestroyPixelFormat(AGLPixelFormat pix)
-{
-  //fprintf(stderr,"aglDestroyPixelFormat...not implemented\n"); fflush(stderr);
-  AGLDisposePixelFormat((AGLPixelFmt)pix);
-}
-
-
-GLboolean aglDescribePixelFormat(AGLPixelFormat pix, GLint attrib,
-                                        GLint *value)
-{
-  GLboolean ret=false;
-  switch(attrib) {
-    case AGL_ACCELERATED:
-      /* Of COURSE we are accelerated..right? */
-      fprintf(stderr,"aglDescribePixelFormat asked about AGL_ACCELERATED, we are lying...\n"); fflush(stderr);
-      *value=true;
-      ret=true;
-      break;
-    case AGL_RENDERER_ID:
-      /* Um...1? */
-      fprintf(stderr,"aglDescribePixelFormat asked about AGL_RENDERER_ID, we are making one up...\n"); fflush(stderr);
-      *value=1;
-      ret=true;
-      break;
-    case AGL_DEPTH_SIZE:
-      /* We return what they asked for, possibly lying.  If they didn't ask, 16 */
-      fprintf(stderr,"aglDescribePixelFormat asked about AGL_DEPTH_SIZE, we are lying...\n"); fflush(stderr);
-      *value=depthSizeTheyAskedFor;
-      ret=true;
-      break;
-    case AGL_PIXEL_SIZE:
-      /* We return what they asked for, possibly lying.  If they didn't ask, 16 */
-      fprintf(stderr,"aglDescribePixelFormat asked about AGL_PIXEL_SIZE, we are lying...\n"); fflush(stderr);
-      *value=pixelSizeTheyAskedFor;
-      ret=true;
-      break;
-    case AGL_STENCIL_SIZE:
-      /* We return what they asked for, possibly lying.  If they didn't ask, 16 */
-      fprintf(stderr,"aglDescribePixelFormat asked about AGL_STENCIL_SIZE, we are lying...\n"); fflush(stderr);
-      *value=stencilSizeTheyAskedFor;
-      ret=true;
-      break;
-    case AGL_DOUBLEBUFFER:
-      /* Of COURSE we are double buffered...right? */
-      fprintf(stderr,"aglDescribePixelFormat asked about AGL_DOUBLEBUFFER, are we lying?\n"); fflush(stderr);
-      *value=true;
-      ret=true;
-      break;
-    default:
-      fprintf(stderr,"aglDescribePixelFormat %d %d ...not implemented\n",(int)pix,(int)attrib); fflush(stderr);
-      break;
-  }
-  return ret;
 }
 
 
 AGLPixelFormat aglChoosePixelFormat(const AGLDevice *gdevs, GLint ndev,
                                            /*const*/ GLint *attribs)
 {
-  //fprintf(stderr,"aglChoosePixelFormat...not implemented\n"); fflush(stderr);
   int count=0;
+#ifdef DEBUG
+fprintf(stderr,"Called my aglChoosePixelFormat...\n"); fflush(stderr);
+#endif
+  /* We ASSUME they remembered to put an AGL_NONE at the end... */
   while(attribs[count]!=AGL_NONE) {
     	switch(attribs[count]) 
     	{
@@ -478,32 +355,178 @@ AGLPixelFormat aglChoosePixelFormat(const AGLDevice *gdevs, GLint ndev,
       		case AGL_CLOSEST_POLICY:
             fprintf(stderr,"aglChoosePixelFormat: attrib=AGL_CLOSEST_POLICY\n"); fflush(stderr);
         		break;
+      		case AGL_OFFSCREEN:
+            fprintf(stderr,"aglChoosePixelFormat: attrib=AGL_OFFSCREEN\n"); fflush(stderr);
+        		break;
        		default:
             fprintf(stderr,"aglChoosePixelFormat: attrib=%d?\n",attribs[count]); fflush(stderr);
         		break;
     	}
     count++;
   }
+  if(!count) {
+    fprintf(stderr,"aglChoosePixelFormat no attribs, providing some...\n"); fflush(stderr);
+    attribs=myAttribs;
+  }
   /* NOTE: gdevs may not be correct! */
+  if(!gdevs) {
+    fprintf(stderr,"aglChoosePixelFormat no gdevs, providing one...\n"); fflush(stderr);
+    gdevs = (const AGLDevice *)GetMainDevice();
+  }
+  //if(!ndev) ndev=1;
+#ifdef DEBUG
+fprintf(stderr,"Passing to my __aglChoosePixelFmt2026...\n"); fflush(stderr);
+#endif
   return (AGLPixelFormat)__aglChoosePixelFmt2026((GDHandle *)gdevs,ndev,attribs);
 }
 
 
-void glBlendFuncSeparate(GLenum srcRGB, GLenum dstRGB, GLenum srcAlpha, GLenum dstAlpha)
+GLboolean aglSetDrawable(AGLContext ctx, AGLDrawable draw)
 {
-  fprintf(stderr,"glBlendFuncSeparate...not implemented\n"); fflush(stderr);
+  return __aglMakeCurrent(draw,ctx);
 }
 
 
-void glBlendEquation(GLenum mode)
+GLboolean aglSetCurrentContext(AGLContext ctx)
 {
-  fprintf(stderr,"glBlendEquation...not implemented\n"); fflush(stderr);
+  return __aglMakeCurrent(ctx->drawable,ctx);
+}
+
+
+GLboolean aglUpdateContext(AGLContext ctx)
+{
+  fprintf(stderr,"aglUpdateContext...not implemented\n"); fflush(stderr);
+  return true;
+}
+
+
+GLboolean aglSetInteger(AGLContext ctx, GLenum pname,
+                               const GLint *params)
+{
+#ifdef DEBUG
+fprintf(stderr,"Called my aglSetInteger...\n"); fflush(stderr);
+#endif
+  switch(pname) {
+    case AGL_COLORMAP_ENTRY:
+      // We don't support indexed color, so ignore
+      break;
+    case AGL_SWAP_INTERVAL:
+      swapIntervalTheyAskedFor=(int)*params;  /* Is this right? */
+      break;
+    default:
+      fprintf(stderr,"aglSetInteger pname=%d...not implemented\n",(int)pname); fflush(stderr);
+      break;
+  }
+  return true;
+}
+
+
+void aglDestroyPixelFormat(AGLPixelFormat pix)
+{
+  AGLDisposePixelFormat((AGLPixelFmt)pix);
+}
+
+
+GLboolean aglDescribePixelFormat(AGLPixelFormat pix, GLint attrib,
+                                        GLint *value)
+{
+  GLboolean ret=false;
+#ifdef DEBUG
+fprintf(stderr,"Called my aglDescribePixelFormat...\n"); fflush(stderr);
+#endif
+  switch(attrib) {
+    case AGL_RGBA:
+      /* Of COURSE we are rgba..right? */
+      fprintf(stderr,"aglDescribePixelFormat asked about AGL_RGBA, we are lying...\n"); fflush(stderr);
+      *value=true;
+      ret=true;
+      break;
+    case AGL_ACCELERATED:
+      /* Of COURSE we are accelerated..right? */
+      fprintf(stderr,"aglDescribePixelFormat asked about AGL_ACCELERATED, we are lying...\n"); fflush(stderr);
+      *value=true;
+      ret=true;
+      break;
+    case AGL_FULLSCREEN:
+      /* No!  No fullscreen for us! */
+      fprintf(stderr,"aglDescribePixelFormat asked about AGL_FULLSCREEN, we are lying...\n"); fflush(stderr);
+      *value=false;
+      ret=true;
+      break;
+    case AGL_RENDERER_ID:
+      /* Um...1? */
+      fprintf(stderr,"aglDescribePixelFormat asked about AGL_RENDERER_ID, we are making one up...\n"); fflush(stderr);
+      *value=1;
+      ret=true;
+      break;
+    case AGL_DEPTH_SIZE:
+      /* We return what they asked for, possibly lying.  If they didn't ask, 16 */
+      fprintf(stderr,"aglDescribePixelFormat asked about AGL_DEPTH_SIZE, we are lying...\n"); fflush(stderr);
+      *value=depthSizeTheyAskedFor;
+      ret=true;
+      break;
+    case AGL_PIXEL_SIZE:
+      /* We return what they asked for, possibly lying.  If they didn't ask, 16 */
+      fprintf(stderr,"aglDescribePixelFormat asked about AGL_PIXEL_SIZE, we are lying...\n"); fflush(stderr);
+      *value=pixelSizeTheyAskedFor;
+      ret=true;
+      break;
+    case AGL_STENCIL_SIZE:
+      /* We return what they asked for, possibly lying.  If they didn't ask, 16 */
+      fprintf(stderr,"aglDescribePixelFormat asked about AGL_STENCIL_SIZE, we are lying...\n"); fflush(stderr);
+      *value=stencilSizeTheyAskedFor;
+      ret=true;
+      break;
+    case AGL_DOUBLEBUFFER:
+      /* Of COURSE we are double buffered...right? */
+      fprintf(stderr,"aglDescribePixelFormat asked about AGL_DOUBLEBUFFER, are we lying?\n"); fflush(stderr);
+      *value=true;
+      ret=true;
+      break;
+    default:
+      fprintf(stderr,"aglDescribePixelFormat %d %d ...not implemented\n",(int)pix,(int)attrib); fflush(stderr);
+      break;
+  }
+  return ret;
+}
+
+
+AGLRendererInfo aglQueryRendererInfo(const AGLDevice *gdevs, GLint ndev)
+{
+  fprintf(stderr,"aglQueryRendererInfo...not implemented\n"); fflush(stderr);
+  return (AGLRendererInfo)0;
+}
+
+
+void aglDestroyRendererInfo(AGLRendererInfo rend)
+{
+  fprintf(stderr,"aglDestroyRendererInfo...not implemented\n"); fflush(stderr);
+}
+
+
+AGLRendererInfo aglNextRendererInfo(AGLRendererInfo rend)
+{
+  fprintf(stderr,"aglNextRendererInfo...not implemented\n"); fflush(stderr);
+  return (AGLRendererInfo)0;
+}
+
+
+GLboolean aglDescribeRenderer(AGLRendererInfo rend, GLint prop, GLint *value)
+{
+  fprintf(stderr,"aglDescribeRenderer...not implemented\n"); fflush(stderr);
+  return false;
+}
+
+
+GLboolean aglConfigure(GLint whats, GLint value)
+{
+  fprintf(stderr,"aglConfigure %d...not implemented\n",whats); fflush(stderr);
+  return false;
 }
 
 
 const GLubyte *aglErrorString(GLenum code)
 {
-  //fprintf(stderr,"aglErrorString...not implemented\n"); fflush(stderr);
   if (code)
     switch (code)
     {

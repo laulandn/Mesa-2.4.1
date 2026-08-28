@@ -1,0 +1,60 @@
+
+Mesa 2.3 release notes
+----------------------
+
+
+Mesa 2.3 features optimized vertex specification and transformation.
+I've seen from 10 to 30% improvement in vertex specification and
+transformation WITH RASTERIZATION DISABLED.
+
+
+You can disable Mesa's rasterization by setting the MESA_NO_RASTER
+environment variable (also available in previous versions of Mesa).
+
+
+If you set the FAST_MATH symbol with the -DFAST_MATH compiler switch
+you'll replace the C math lib's sqrt() function with an approximation
+function from src/mmath.c.  However, this approximation doesn't appear to
+be good enough under some circumstances.  The GLUT spots.c demo, for
+example, doesn't work right when using FAST_MATH.
+
+
+The vbfill.c file has many optimized glVertex, glColor, and glTexCoord
+functions.
+
+
+The vbxform.c file implements optimized vertex transformation stages.
+
+
+The device driver interface has several new functions.  Some were
+especially made for the 3Dfx driver (but could be useful for other
+drivers).
+
+   void (*NearFar)( GLcontext *ctx, GLfloat nearVal, GLfloat farVal )
+      To specify near and far clipping planes to device driver.
+
+   void (*RasterSetup)( GLcontext *ctx, GLuint start, GLuint end );
+      To allow device driver to do rasterization setup for vertices
+      in the vertex buffer.
+
+   GLboolean (*RenderVB)( GLcontext *ctx, GLboolean allDone );
+      The device driver can implement this function to rasterize entire
+      buffers full of points, lines, and triangles.
+
+
+Many source files have been reorganized.
+
+
+Dithering for TrueColor X visuals is now implemented.  Since dithering is
+enabled by default in OpenGL you may see a slight performance degradation
+compared to previous version of Mesa when dithering was not done.  You can
+disable dithering with glDisable(GL_DITHER).
+
+
+ATTN: authors of Mesa device drivers:
+The gl_create_visual() now takes 4 more arguments: number of bits per red,
+green, blue, and alpha.
+
+See the FUTURE file for info about planned changes in the next version
+of Mesa.
+

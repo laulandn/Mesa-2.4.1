@@ -51,6 +51,8 @@
 
 #include "RAVE.h"
 
+#include "FB.h"
+
 
 typedef struct TRAVEColor {
 	float r;
@@ -67,6 +69,8 @@ typedef struct TRAVEColor {
 typedef struct TRADriverPrivate 
 {
 	
+	TFBBuffer frameBuffer;	
+
 	TAGLPixelFmtRec		pixFmt;		/* Pixel format information */
 	
 	CGrafPtr			drawable;		/* Creation buffer (drawable) */

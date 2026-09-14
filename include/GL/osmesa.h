@@ -80,7 +80,9 @@ extern "C" {
 #endif
 
 
-#include "GL/gl.h"
+// This is so it won't conflict with Apple's gl.h
+// You really should include gl.h yourself if you are using this
+//#include "GL/gl.h"
 
 
 

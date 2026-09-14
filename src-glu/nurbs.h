@@ -142,7 +142,7 @@ typedef struct
 struct GLUnurbsObj {
 	GLboolean		culling;
 	GLenum			error;
-	void			(CALLBACK *error_callback)( GLenum err );
+	void			(CALLBACK *error_callback)( /*GLenum err*/ );
 	GLenum			display_mode;
 	GLU_nurbs_enum	nurbs_type;
 	GLboolean		auto_load_matrix;

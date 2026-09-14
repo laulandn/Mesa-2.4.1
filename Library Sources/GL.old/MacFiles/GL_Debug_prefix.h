@@ -1,0 +1,1 @@
+#define MESA_DEBUG#define AGL_DEBUG#define DEBUG/* #define MESA_NO_RASTER */

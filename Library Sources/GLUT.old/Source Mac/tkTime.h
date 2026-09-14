@@ -1,0 +1,1 @@
+/* For speed testing */#ifndef __TKTIME__#define __TKTIME__extern double tkNow(void); /* returns the time in seconds */#endif

@@ -90,7 +90,7 @@ struct GLUquadricObj {
 	GLenum Orientation;		/* GLU_INSIDE or GLU_OUTSIDE */
 	GLboolean TextureFlag;		/* Generate texture coords? */
 	GLenum Normals;		/* GLU_NONE, GLU_FLAT, or GLU_SMOOTH */
-	void (*ErrorFunc)(GLenum err);	/* Error handler callback function */
+	void (*ErrorFunc)(/*GLenum err*/);	/* Error handler callback function */
 };
 
 
@@ -102,7 +102,7 @@ static void quadric_error( GLUquadricObj *qobj, GLenum error, const char *msg )
 {
    /* Call the error call back function if any */
    if (qobj->ErrorFunc) {
-      (*qobj->ErrorFunc)( error );
+      (*qobj->ErrorFunc)( /*error*/ );
    }
    /* Print a message to stdout if MESA_DEBUG variable is defined */
    if (getenv("MESA_DEBUG")) {

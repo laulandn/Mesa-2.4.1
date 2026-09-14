@@ -961,7 +961,7 @@ void APIENTRY glGetFloatv( GLenum pname, GLfloat *params )
 }
 
 
-void APIENTRY glGetIntegerv( GLenum pname, GLint *params )
+void APIENTRY glGetIntegerv_old( GLenum pname, GLint *params )
 {
    GET_CONTEXT;
    CHECK_CONTEXT;
@@ -1065,7 +1065,7 @@ void APIENTRY glGetPolygonStipple( GLubyte *mask )
 }
 
 
-const GLubyte * APIENTRY glGetString( GLenum name )
+const GLubyte * APIENTRY glGetString_old( GLenum name )
 {
    GET_CONTEXT;
    CHECK_CONTEXT_RETURN(NULL);

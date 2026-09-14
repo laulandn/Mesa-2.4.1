@@ -70,7 +70,7 @@ call_user_error( GLUnurbsObj *nobj, GLenum error )
 {
     nobj->error=error;
     if(nobj->error_callback != NULL) {
-        (*(nobj->error_callback))(error);
+        (*(nobj->error_callback))(/*error*/);
     }
     else {
        printf("NURBS error %d %s\n", error, gluErrorString(error) );

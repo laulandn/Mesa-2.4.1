@@ -95,6 +95,7 @@
 #else
 #include <stdlib.h>
 #include <string.h>
+#include "GL/gl.h"
 #include "GL/osmesa.h"
 #include "context.h"
 #include "depth.h"

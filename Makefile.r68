@@ -6,16 +6,32 @@ RANLIB=m68k-apple-macos-ranlib
 
 
 all:
+	make -f Makefile.r68 -C agl-mini
 	make -f Makefile.r68 -C src
 	make -f Makefile.r68 -C src-glu
+	make -f Makefile.r68 -C GLUT_apple
 	make -f Makefile.r68 -C Library\ Sources
-	make -f Makefile.r68 -C Examples
-	make -f Makefile.r68 -C Library\ Sources lib
-	cp Library\ Sources/*a .
+#	make -f Makefile.r68 -C Examples
+#	cp Library\ Sources/*a .
+	make -f Makefile.r68 lib
+
+lib:
+	rm -f *.a
+	cp */*.a .
+	$(AR) rcv libOpenGLLibrary.a src/*.o Library\ Sources/AGL/Sources/*.o Library\ Sources/AGL/Sources/aglDD/*.o 
+	$(RANLIB) libOpenGLLibrary.a
+	$(AR) rcv libOpenGLUtility.a src-glu/*.o
+	$(RANLIB) libOpenGLUtility.a
+
+install:
+	make -f Makefile.r68 lib
+	# NOTE: Do NOT copy the include files!
+	cp *.a $(HOME)/Retro68-build/toolchain/m68k-apple-macos/lib/.
 	
 clean:
 	make -f Makefile.r68 -C src clean
 	make -f Makefile.r68 -C src-glu clean
+	make -f Makefile.r68 -C GLUT_apple clean
 	make -f Makefile.r68 -C Library\ Sources clean
 	make -f Makefile.r68 -C Examples clean
 	rm -f *.a */*.a

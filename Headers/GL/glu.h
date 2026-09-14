@@ -23,6 +23,9 @@
 
 /*
  * $Log: glu.h,v $
+ * Revision 1.7  1997/08/19 02:35:07  brianp
+ * added some Macintosh-only pragmas (Miklos Fazekas)
+ *
  * Revision 1.6  1997/07/13 22:59:34  brianp
  * added const to viewport parameter of gluPickMatrix()
  *
@@ -59,6 +62,7 @@ extern "C" {
 
 
 #include "GL/gl.h"
+
 
 #ifdef macintosh
 	#pragma enumsalwaysint on
@@ -395,12 +399,14 @@ extern const GLubyte* gluGetString( GLenum name );
 #pragma export off
 #endif
 
+
 #ifdef macintosh
 	#pragma enumsalwaysint reset
 	#if PRAGMA_IMPORT_SUPPORTED
 	#pragma import off
 	#endif
 #endif
+
 
 #ifdef __cplusplus
 }

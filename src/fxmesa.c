@@ -439,7 +439,7 @@ static GLboolean drawbitmap(GLcontext *ctx, GLsizei width, GLsizei height,
 #define DATA_PROFILING char *format="Number of Cycles for the GrVertex setup: %u (%u number of GrVertex)\n"; unsigned long numcycl
 
 #define START_PROFILING __asm { \
-  RDTSC                         \							
+  RDTSC                         \
   _asm mov numcycl,eax	        \
 }
 

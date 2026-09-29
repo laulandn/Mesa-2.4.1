@@ -47,8 +47,13 @@ extern "C" {
 #  include <X11/Xlib.h>
 #  include <X11/Xutil.h>
 #endif
+#ifdef __BEOS__
+#include "GL/gl.h"
+#include "GL/glu.h"
+#else
 #include <GL/gl.h>
 #include <GL/glu.h>
+#endif
 
 /*
 ** ToolKit Window Types
@@ -262,6 +267,10 @@ typedef struct _AUX_RGBImageRec {
 ** Prototypes
 */
 
+#ifdef __BEOS__
+#pragma export on
+#endif
+
 extern void auxInitDisplayMode(GLbitfield);
 extern void auxInitPosition(int, int, int, int);
 extern GLenum auxInitWindow(char *);
@@ -269,7 +278,7 @@ extern void auxCloseWindow(void);
 extern void auxQuit(void);
 extern void auxSwapBuffers(void);
 
-#if !defined(AMIGA) && !defined(__WIN32__) && !defined(NeXT) && !defined(__QUICKDRAW__) && !defined(DOSVGA)
+#if !defined(AMIGA) && !defined(__WIN32__) && !defined(NeXT) && !defined(__QUICKDRAW__) && !defined(DOSVGA) && !defined(__BEOS__)
 extern Display *auxXDisplay(void);
 extern Window auxXWindow(void);
 #endif

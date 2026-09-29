@@ -6,16 +6,33 @@ RANLIB=powerpc-apple-macos-ranlib
 
 
 all:
+	make -f Makefile.r68ppc -C agl-mini
 	make -f Makefile.r68ppc -C src
 	make -f Makefile.r68ppc -C src-glu
+	make -f Makefile.r68ppc -C GLUT_apple
 	make -f Makefile.r68ppc -C Library\ Sources
-	make -f Makefile.r68ppc -C Examples
-	make -f Makefile.r68ppc -C Library\ Sources lib
-	cp Library\ Sources/*a .
+#	make -f Makefile.r68ppc -C Examples
+#	cp Library\ Sources/*a .
+	make -f Makefile.r68ppc lib
+
+lib:
+	rm -f *.a
+	cp */*.a .
+	$(AR) rcv libMesaOpenGLLibrary.a src/*.o Library\ Sources/AGL/Sources/*.o Library\ Sources/AGL/Sources/aglDD/*.o 
+	$(RANLIB) libMesaOpenGLLibrary.a
+	$(AR) rcv libMesaOpenGLUtility.a src-glu/*.o
+	$(RANLIB) libMesaOpenGLUtility.a
+
+install:
+	make -f Makefile.r68ppc lib
+	# NOTE: Do NOT copy the include files!
+	cp *.a $(HOME)/Retro68-build/toolchain/powerpc-apple-macos/lib/.
 	
 clean:
-	make -f Makefile.r68ppc -C src
-	make -f Makefile.r68ppc -C src-glu
+	make -f Makefile.r68ppc -C agl-mini clean
+	make -f Makefile.r68ppc -C src clean
+	make -f Makefile.r68ppc -C src-glu clean
+	make -f Makefile.r68ppc -C GLUT_apple clean
 	make -f Makefile.r68ppc -C Library\ Sources clean
 	make -f Makefile.r68ppc -C Examples clean
 	rm -f *.a */*.a

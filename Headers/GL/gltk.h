@@ -2,7 +2,7 @@
 
 /*
  * Mesa 3-D graphics library
- * Version:  2.1
+ * Version:  2.4
  * Copyright (C) 1995-1996  Brian Paul
  *
  * This library is free software; you can redistribute it and/or
@@ -35,8 +35,14 @@ extern "C" {
 #endif
 
 
+#ifdef __BEOS__
+#include "GL/gl.h"
+#include "GL/glu.h"
+#else
 #include <GL/gl.h>
 #include <GL/glu.h>
+#endif
+
 
 /*
 ** Nano Window Toolkit.
@@ -44,7 +50,7 @@ extern "C" {
 */
 
 
-#if defined(__WIN32__) || defined(DOSVGA)
+#if defined(__WIN32__) || defined(DOSVGA) || defined(FX)
 /*
 ** Display Mode Selection Criteria
 */
@@ -202,6 +208,10 @@ enum {
     TK_WHITE
 };
 
+#ifdef __BEOS__
+#pragma export on
+#endif
+
 #if defined(__WIN32__) || defined(DOSVGA)
 extern float tkRGBMap[17][3];
 #else
@@ -278,6 +288,9 @@ extern void tkSolidCylinder(GLuint, float, float);
 extern void tkWireCone(GLuint, float, float);
 extern void tkSolidCone(GLuint, float, float);
 
+#ifdef __BEOS__
+#pragma export off
+#endif
 
 #ifdef __cplusplus
 }

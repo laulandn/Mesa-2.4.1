@@ -9,7 +9,7 @@ CXX=powerpc-apple-macos-g++
 AR=powerpc-apple-macos-ar
 RANLIB=powerpc-apple-macos-ranlib
 
-CFLAGS= -I../../../Headers -I../../GL/Sources
+CFLAGS= -I../../../Headers -I../../../src
 
 OBJS=$(subst .c,.o,$(wildcard *.c))
 
@@ -17,12 +17,13 @@ OBJS=$(subst .c,.o,$(wildcard *.c))
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 
+all: $(OBJS)
+	make -f Makefile.r68ppc -C aglDD
+	make -f Makefile.r68ppc lib
+
 lib: $(OBJS)
 	$(AR) rcv lib$(LIBNAME).a *.o */*.o
 	$(RANLIB) lib$(LIBNAME).a
-
-all: $(OBJS)
-	make -f Makefile.r68ppc -C aglDD
 
 clean:
 	make -f Makefile.r68ppc -C aglDD clean

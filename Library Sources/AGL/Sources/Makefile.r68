@@ -17,12 +17,13 @@ OBJS=$(subst .c,.o,$(wildcard *.c))
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 
+all: $(OBJS)
+	make -f Makefile.r68 -C aglDD
+	make -f Makefile.r68 lib
+
 lib: $(OBJS)
 	$(AR) rcv lib$(LIBNAME).a *.o */*.o
 	$(RANLIB) lib$(LIBNAME).a
-
-all: $(OBJS)
-	make -f Makefile.r68 -C aglDD
 
 clean:
 	make -f Makefile.r68 -C aglDD clean

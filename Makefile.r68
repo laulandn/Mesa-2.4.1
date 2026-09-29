@@ -18,10 +18,10 @@ all:
 lib:
 	rm -f *.a
 	cp */*.a .
-	$(AR) rcv libOpenGLLibrary.a src/*.o Library\ Sources/AGL/Sources/*.o Library\ Sources/AGL/Sources/aglDD/*.o 
-	$(RANLIB) libOpenGLLibrary.a
-	$(AR) rcv libOpenGLUtility.a src-glu/*.o
-	$(RANLIB) libOpenGLUtility.a
+	$(AR) rcv libMesaOpenGLLibrary.a src/*.o Library\ Sources/AGL/Sources/*.o Library\ Sources/AGL/Sources/aglDD/*.o 
+	$(RANLIB) libMesaOpenGLLibrary.a
+	$(AR) rcv libMesaOpenGLUtility.a src-glu/*.o
+	$(RANLIB) libMesaOpenGLUtility.a
 
 install:
 	make -f Makefile.r68 lib
@@ -29,6 +29,7 @@ install:
 	cp *.a $(HOME)/Retro68-build/toolchain/m68k-apple-macos/lib/.
 	
 clean:
+	make -f Makefile.r68 -C agl-mini clean
 	make -f Makefile.r68 -C src clean
 	make -f Makefile.r68 -C src-glu clean
 	make -f Makefile.r68 -C GLUT_apple clean

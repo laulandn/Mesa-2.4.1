@@ -9,7 +9,7 @@ RANLIB=m68k-apple-macos-ranlib
 #AR=powerpc-apple-macos-ar
 #RANLIB=powerpc-apple-macos-ranlib
 
-CFLAGS=  -I$(HOME)/Retro68-build/toolchain/m68k-apple-macos/include/GL -Dmacintosh 
+CFLAGS=-I. -I../Headers -Dmacintosh 
 
 CFLAGS+= -DSDL_MACOSCLASSIC_MESAGL=1
 #CFLAGS+= -DUSING_SDL2=1

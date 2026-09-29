@@ -6,32 +6,37 @@ RANLIB=powerpc-apple-macos-ranlib
 
 
 all:
-	make -f Makefile.r68ppc -i -C AGL/Sources/aglDD
+	make -f Makefile.r68ppc -C AGL/Sources/aglDD
 	make -f Makefile.r68ppc -C AGL/Sources
-	make -f Makefile.r68ppc -C GL/Sources
-	make -f Makefile.r68ppc -C GLU/Sources
+#	make -f Makefile.r68ppc -C GL/Sources
+#	make -f Makefile.r68ppc -C GLU/Sources
 	make -f Makefile.r68ppc -C AUX:TK/Source
 	make -f Makefile.r68ppc -C Stub\ Libs
-	make -f Makefile.r68ppc -C GLUT/Source\ Common
-	make -f Makefile.r68ppc -i -C GLUT/Source\ Mac
-	make -f Makefile.r68ppc -i -C GLUT_apple
+#	make -f Makefile.r68ppc -C GLUT/Source\ Common
+#	make -f Makefile.r68ppc -i -C GLUT/Source\ Mac
+	make -f Makefile.r68ppc lib
 	
 lib:
-	make -f Makefile.r68ppc all
-	$(AR) rcv libMesaOpenGLLibrary.a AGL/Sources/*.o AGL/Sources/aglDD/*.o GL/Sources/*.o
-	$(RANLIB) libMesaOpenGLLibrary.a
-	$(AR) rcv libMesaOpenGLUtility.a GLU/Sources/*.o
-	$(RANLIB) libMesaOpenGLUtility.a
-	$(AR) rcv libglut_pp.a GLUT/Source\ Common/*.o GLUT/Source\ Mac/*.o
-	$(RANLIB) libglut_pp.a
-	$(AR) rcv libglut.a GLUT_apple/*.o
-	$(RANLIB) libglut.a
+	rm -f *.a
+	cp */*/*.a .
+#	$(AR) rcv libMesaOpenGLLibrary.a AGL/Sources/*.o AGL/Sources/aglDD/*.o GL/Sources/*.o
+#	$(RANLIB) libMesaOpenGLLibrary.a
+#	$(AR) rcv libMesaOpenGLUtility.a GLU/Sources/*.o
+#	$(RANLIB) libMesaOpenGLUtility.a
+#	$(AR) rcv libglut_pp.a GLUT/Source\ Common/*.o GLUT/Source\ Mac/*.o
+#	$(RANLIB) libglut_pp.a
+#	$(AR) rcv libglut.a GLUT_apple/*.o
+#	$(RANLIB) libglut.a
 
 install:
-	make -f Makefile.r68ppc lib
-	cp *.a $(HOME)/Retro68-build/toolchain/powerpc-apple-macos/lib/.
+#	make -f Makefile.r68ppc lib
+#	cp *.a $(HOME)/Retro68-build/toolchain/powerpc-apple-macos/lib/.
 
 clean:
+	make -f Makefile.r68ppc -C AGL/Sources/aglDD clean
+	make -f Makefile.r68ppc -C AGL/Sources clean
+	make -f Makefile.r68ppc -C AUX:TK/Source clean
+	make -f Makefile.r68ppc -C Stub\ Libs clean
 	rm -f *.a */*.a
 	rm -f */*/*.o */*/*.a
 	rm -f */*/*/*.o */*/*/*.a

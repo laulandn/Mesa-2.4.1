@@ -9,7 +9,7 @@ AR=powerpc-apple-macos-ar
 RANLIB=powerpc-apple-macos-ranlib
 
 
-CFLAGS= -I../../../../Headers -I../../../GL/Sources -I..
+CFLAGS= -I../../../../Headers -I../../../../src -I..
 
 OBJS=$(subst .c,.o,$(wildcard *.c))
 

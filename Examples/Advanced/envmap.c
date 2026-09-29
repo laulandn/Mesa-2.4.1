@@ -618,6 +618,9 @@ motion(int x, int y)
 int
 main(int argc, char *argv[])
 {
+  freopen ("stdout.txt", "w", stdout);
+  freopen ("stderr.txt", "w", stderr);
+
   parse(argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
   glutInitWindowSize(currwidth, currheight);

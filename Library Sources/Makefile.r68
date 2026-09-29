@@ -6,7 +6,7 @@ RANLIB=m68k-apple-macos-ranlib
 
 
 all:
-	make -f Makefile.r68 -i -C AGL/Sources/aglDD
+	make -f Makefile.r68 -C AGL/Sources/aglDD
 	make -f Makefile.r68 -C AGL/Sources
 #	make -f Makefile.r68 -C GL/Sources
 #	make -f Makefile.r68 -C GLU/Sources
@@ -25,6 +25,7 @@ lib:
 #	$(RANLIB) libOpenGLUtility.a
 #	$(AR) rcv libglut_pp.a GLUT/Source\ Common/*.o GLUT/Source\ Mac/*.o
 #	$(RANLIB) libglut_pp.a
+#	$(AR) rcv libglut.a GLUT_apple/*.o
 #	$(RANLIB) libglut.a
 
 install:
@@ -32,6 +33,10 @@ install:
 #	cp libOpenGLLibrary.a libOpenGLUtility.a libglut.a $(HOME)/Retro68-build/toolchain/m68k-apple-macos/lib/.
 
 clean:
+	make -f Makefile.r68 -C AGL/Sources/aglDD clean
+	make -f Makefile.r68 -C AGL/Sources clean
+	make -f Makefile.r68 -C AUX:TK/Source clean
+	make -f Makefile.r68 -C Stub\ Libs clean
 	rm -f *.a */*.a
 	rm -f */*/*.o */*/*.a
 	rm -f */*/*/*.o */*/*/*.a

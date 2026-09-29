@@ -218,7 +218,7 @@ void display ( void )
 ** What to do of the window is modified.
 */
 
-void myReshape ( GLsizei w, GLsizei h )
+void myReshape ( int w, int h )
 {
   glViewport	( 0,0,w,h ) ;
   glMatrixMode  ( GL_PROJECTION ) ;

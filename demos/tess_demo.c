@@ -387,7 +387,7 @@ static void usage( void )
  *  Open window with initial window size, title bar, 
  *  RGBA display mode, and handle input events.
  */
-void main(int argc, char** argv)
+int main(int argc, char** argv)
 {
    usage();
     glutInit(&argc, argv);

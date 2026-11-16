@@ -1,0 +1,308 @@
+
+CC=m68k-apple-macos-gcc
+CXX=m68k-apple-macos-g++
+AR=m68k-apple-macos-ar
+RANLIB=m68k-apple-macos-ranlib
+#CC=powerpc-apple-macos-gcc
+#CXX=powerpc-apple-macos-g++
+#AR=powerpc-apple-macos-ar
+#RANLIB=powerpc-apple-macos-ranlib
+
+CFLAGS= -I../include -I/opt/local/include
+LDFLAGS=-L.. -lglut -lglaux -lMesaOpenGLUtility -lMesaOpenGLLibrary -lm
+
+
+OBJS=$(subst .c,.o,$(wildcard *.c))
+
+
+.c.o:
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+
+all: $(OBJS) accanti accnot accpersp accum aim alpha alpha3D anti antiindex antipindex antipoint antipoly bezcurve bezmesh bezsurf checker checker2 chess clip colormat cone cube curve depthcue disk dof dofnot double drawf feedback fog fogindex font light linelist lines list list2 maplight material mipmap model movelight nurbs pickdepth pickline picksquare plane planet planetup polys robot sccolorlight scene scenebamb sceneflat select simple smooth sphere stencil stroke surface tea teaambient teapots texgen texturesurf trim xfont
+
+
+accanti:	accanti.o
+	$(CXX) -o accanti.code.bin accanti.o $(LDFLAGS)
+	../bin2app.sh accanti
+
+accnot:	accnot.o
+	$(CXX) -o accnot.code.bin accnot.o $(LDFLAGS)
+	../bin2app.sh accnot
+
+accpersp:	accpersp.o
+	$(CXX) -o accpersp.code.bin accpersp.o $(LDFLAGS)
+	../bin2app.sh accpersp
+
+accum:	accum.o
+	$(CXX) -o accum.code.bin accum.o $(LDFLAGS)
+	../bin2app.sh accum
+
+aim:	aim.o
+	$(CXX) -o aim.code.bin aim.o $(LDFLAGS)
+	../bin2app.sh aim
+
+alpha:	alpha.o
+	$(CXX) -o alpha.code.bin alpha.o $(LDFLAGS)
+	../bin2app.sh alpha
+
+alpha3D:	alpha3D.o
+	$(CXX) -o alpha3D.code.bin alpha3D.o $(LDFLAGS)
+	../bin2app.sh alpha3D
+
+anti:	anti.o
+	$(CXX) -o anti.code.bin anti.o $(LDFLAGS)
+	../bin2app.sh anti
+
+antiindex:	antiindex.o
+	$(CXX) -o antiindex.code.bin antiindex.o $(LDFLAGS)
+	../bin2app.sh antiindex
+
+antipindex:	antipindex.o
+	$(CXX) -o antipindex.code.bin antipindex.o $(LDFLAGS)
+	../bin2app.sh antipindex
+
+antipoint:	antipoint.o
+	$(CXX) -o antipoint.code.bin antipoint.o $(LDFLAGS)
+	../bin2app.sh antipoint
+
+antipoly:	antipoly.o
+	$(CXX) -o antipoly.code.bin antipoly.o $(LDFLAGS)
+	../bin2app.sh antipoly
+
+bezcurve:	bezcurve.o
+	$(CXX) -o bezcurve.code.bin bezcurve.o $(LDFLAGS)
+	../bin2app.sh bezcurve
+
+bezmesh:	bezmesh.o
+	$(CXX) -o bezmesh.code.bin bezmesh.o $(LDFLAGS)
+	../bin2app.sh bezmesh
+
+bezsurf:	bezsurf.o
+	$(CXX) -o bezsurf.code.bin bezsurf.o $(LDFLAGS)
+	../bin2app.sh bezsurf
+
+checker:	checker.o
+	$(CXX) -o checker.code.bin checker.o $(LDFLAGS)
+	../bin2app.sh checker
+
+checker2:	checker2.o
+	$(CXX) -o checker2.code.bin checker2.o $(LDFLAGS)
+	../bin2app.sh checker2
+
+chess:	chess.o
+	$(CXX) -o chess.code.bin chess.o $(LDFLAGS)
+	../bin2app.sh chess
+
+clip:	clip.o
+	$(CXX) -o clip.code.bin clip.o $(LDFLAGS)
+	../bin2app.sh clip
+
+colormat:	colormat.o
+	$(CXX) -o colormat.code.bin colormat.o $(LDFLAGS)
+	../bin2app.sh colormat
+
+cone:	cone.o
+	$(CXX) -o cone.code.bin cone.o $(LDFLAGS)
+	../bin2app.sh cone
+
+cube:	cube.o
+	$(CXX) -o cube.code.bin cube.o $(LDFLAGS)
+	../bin2app.sh cube
+
+curve:	curve.o
+	$(CXX) -o curve.code.bin curve.o $(LDFLAGS)
+	../bin2app.sh curve
+
+depthcue:	depthcue.o
+	$(CXX) -o depthcue.code.bin depthcue.o $(LDFLAGS)
+	../bin2app.sh depthcue
+
+disk:	disk.o
+	$(CXX) -o disk.code.bin disk.o $(LDFLAGS)
+	../bin2app.sh disk
+
+dof:	dof.o
+	$(CXX) -o dof.code.bin dof.o $(LDFLAGS)
+	../bin2app.sh dof
+
+dofnot:	dofnot.o
+	$(CXX) -o dofnot.code.bin dofnot.o $(LDFLAGS)
+	../bin2app.sh dofnot
+
+double:	double.o
+	$(CXX) -o double.code.bin double.o $(LDFLAGS)
+	../bin2app.sh double
+
+drawf:	drawf.o
+	$(CXX) -o drawf.code.bin drawf.o $(LDFLAGS)
+	../bin2app.sh drawf
+
+feedback:	feedback.o
+	$(CXX) -o feedback.code.bin feedback.o $(LDFLAGS)
+	../bin2app.sh feedback
+
+fog:	fog.o
+	$(CXX) -o fog.code.bin fog.o $(LDFLAGS)
+	../bin2app.sh fog
+
+fogindex:	fogindex.o
+	$(CXX) -o fogindex.code.bin fogindex.o $(LDFLAGS)
+	../bin2app.sh fogindex
+
+font:	font.o
+	$(CXX) -o font.code.bin font.o $(LDFLAGS)
+	../bin2app.sh font
+
+light:	light.o
+	$(CXX) -o light.code.bin light.o $(LDFLAGS)
+	../bin2app.sh light
+
+linelist:	linelist.o
+	$(CXX) -o linelist.code.bin linelist.o $(LDFLAGS)
+	../bin2app.sh linelist
+
+lines:	lines.o
+	$(CXX) -o lines.code.bin lines.o $(LDFLAGS)
+	../bin2app.sh lines
+
+list:	list.o
+	$(CXX) -o list.code.bin list.o $(LDFLAGS)
+	../bin2app.sh list
+
+list2:	list2.o
+	$(CXX) -o list2.code.bin list2.o $(LDFLAGS)
+	../bin2app.sh list2
+
+maplight:	maplight.o
+	$(CXX) -o maplight.code.bin maplight.o $(LDFLAGS)
+	../bin2app.sh maplight
+
+material:	material.o
+	$(CXX) -o material.code.bin material.o $(LDFLAGS)
+	../bin2app.sh material
+
+mipmap:	mipmap.o
+	$(CXX) -o mipmap.code.bin mipmap.o $(LDFLAGS)
+	../bin2app.sh mipmap
+
+model:	model.o
+	$(CXX) -o model.code.bin model.o $(LDFLAGS)
+	../bin2app.sh model
+
+movelight:	movelight.o
+	$(CXX) -o movelight.code.bin movelight.o $(LDFLAGS)
+	../bin2app.sh movelight
+
+nurbs:	nurbs.o
+	$(CXX) -o nurbs.code.bin nurbs.o $(LDFLAGS)
+	../bin2app.sh nurbs
+
+pickdepth:	pickdepth.o
+	$(CXX) -o pickdepth.code.bin pickdepth.o $(LDFLAGS)
+	../bin2app.sh pickdepth
+
+pickline:	pickline.o
+	$(CXX) -o pickline.code.bin pickline.o $(LDFLAGS)
+	../bin2app.sh pickline
+
+picksquare:	picksquare.o
+	$(CXX) -o picksquare.code.bin picksquare.o $(LDFLAGS)
+	../bin2app.sh picksquare
+
+plane:	plane.o
+	$(CXX) -o plane.code.bin plane.o $(LDFLAGS)
+	../bin2app.sh plane
+
+planet:	planet.o
+	$(CXX) -o planet.code.bin planet.o $(LDFLAGS)
+	../bin2app.sh planet
+
+planetup:	planetup.o
+	$(CXX) -o planetup.code.bin planetup.o $(LDFLAGS)
+	../bin2app.sh planetup
+
+polys:	polys.o
+	$(CXX) -o polys.code.bin polys.o $(LDFLAGS)
+	../bin2app.sh polys
+
+robot:	robot.o
+	$(CXX) -o robot.code.bin robot.o $(LDFLAGS)
+	../bin2app.sh robot
+
+sccolorlight:	sccolorlight.o
+	$(CXX) -o sccolorlight.code.bin sccolorlight.o $(LDFLAGS)
+	../bin2app.sh sccolorlight
+
+scene:	scene.o
+	$(CXX) -o scene.code.bin scene.o $(LDFLAGS)
+	../bin2app.sh scene
+
+scenebamb:	scenebamb.o
+	$(CXX) -o scenebamb.code.bin scenebamb.o $(LDFLAGS)
+	../bin2app.sh scenebamb
+
+sceneflat:	sceneflat.o
+	$(CXX) -o sceneflat.code.bin sceneflat.o $(LDFLAGS)
+	../bin2app.sh sceneflat
+
+select:	select.o
+	$(CXX) -o select.code.bin select.o $(LDFLAGS)
+	../bin2app.sh select
+
+simple:	simple.o
+	$(CXX) -o simple.code.bin simple.o $(LDFLAGS)
+	../bin2app.sh simple
+
+smooth:	smooth.o
+	$(CXX) -o smooth.code.bin smooth.o $(LDFLAGS)
+	../bin2app.sh smooth
+
+sphere:	sphere.o
+	$(CXX) -o sphere.code.bin sphere.o $(LDFLAGS)
+	../bin2app.sh sphere
+
+stencil:	stencil.o
+	$(CXX) -o stencil.code.bin stencil.o $(LDFLAGS)
+	../bin2app.sh stencil
+
+stroke:	stroke.o
+	$(CXX) -o stroke.code.bin stroke.o $(LDFLAGS)
+	../bin2app.sh stroke
+
+surface:	surface.o
+	$(CXX) -o surface.code.bin surface.o $(LDFLAGS)
+	../bin2app.sh surface
+
+tea:	tea.o
+	$(CXX) -o tea.code.bin tea.o $(LDFLAGS)
+	../bin2app.sh tea
+
+teaambient:	teaambient.o
+	$(CXX) -o teaambient.code.bin teaambient.o $(LDFLAGS)
+	../bin2app.sh teaambient
+
+teapots:	teapots.o
+	$(CXX) -o teapots.code.bin teapots.o $(LDFLAGS)
+	../bin2app.sh teapots
+
+texgen:	texgen.o
+	$(CXX) -o texgen.code.bin texgen.o $(LDFLAGS)
+	../bin2app.sh texgen
+
+texturesurf:	texturesurf.o
+	$(CXX) -o texturesurf.code.bin texturesurf.o $(LDFLAGS)
+	../bin2app.sh texturesurf
+
+trim:	trim.o
+	$(CXX) -o trim.code.bin trim.o $(LDFLAGS)
+	../bin2app.sh trim
+
+xfont:	xfont.o
+	$(CXX) -o xfont.code.bin xfont.o $(LDFLAGS)
+	../bin2app.sh xfont
+
+
+clean:
+	rm -f *.o *.bin *.pef *.APPL *.dsk *.gdb
+	rm -f accanti accnot accpersp accum aim alpha alpha3D anti antiindex antipindex antipoint antipoly bezcurve bezmesh bezsurf checker checker2 chess clip colormat cone cube curve depthcue disk dof dofnot double drawf feedback fog fogindex font light linelist lines list list2 maplight material mipmap model movelight nurbs pickdepth pickline picksquare plane planet planetup polys robot sccolorlight scene scenebamb sceneflat select simple smooth sphere stencil stroke surface tea teaambient teapots texgen texturesurf trim xfont

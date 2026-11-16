@@ -45,7 +45,7 @@ int angx,angy,angz;
 GLuint figure;
 
 /*function definitions */
-void main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 
  if (parseCmdLine(argc, argv) == GL_FALSE) {

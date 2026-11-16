@@ -25,7 +25,7 @@ int p[][6] = {
   {-1,-1,-1,-1,-1,-1}
 };
 
-void main()
+int main()
 {
   int i,j;
   int ch;

@@ -1,6 +1,9 @@
 /* projshad.c */
 
 
+#include <GL/gl.h>
+
+
 /*
  * Generate the projection matrix for a projective shadow
  * Borrowed from GLUT distribution's scube demo, written

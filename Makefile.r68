@@ -9,19 +9,22 @@ all:
 	make -f Makefile.r68 -C agl-mini
 	make -f Makefile.r68 -C src
 	make -f Makefile.r68 -C src-glu
+	make -i -f Makefile.r68 -C src-aux
+	make -i -f Makefile.r68 -C src-tk
+	make -i -f Makefile.r68 -C util
 	make -f Makefile.r68 -C GLUT_apple
 	make -f Makefile.r68 -C Library\ Sources
-#	make -f Makefile.r68 -C Examples
 #	cp Library\ Sources/*a .
-	make -f Makefile.r68 lib
-
-lib:
 	rm -f *.a
 	cp */*.a .
 	$(AR) rcv libMesaOpenGLLibrary.a src/*.o Library\ Sources/AGL/Sources/*.o Library\ Sources/AGL/Sources/aglDD/*.o 
 	$(RANLIB) libMesaOpenGLLibrary.a
 	$(AR) rcv libMesaOpenGLUtility.a src-glu/*.o
 	$(RANLIB) libMesaOpenGLUtility.a
+	make -f Makefile.r68 -C Examples
+	make -i -f Makefile.r68 -C book
+	make -i -f Makefile.r68 -C demos
+	make -i -f Makefile.r68 -C samples
 
 install:
 	make -f Makefile.r68 lib
@@ -32,7 +35,13 @@ clean:
 	make -f Makefile.r68 -C agl-mini clean
 	make -f Makefile.r68 -C src clean
 	make -f Makefile.r68 -C src-glu clean
+	make -f Makefile.r68 -C src-aux clean
+	make -f Makefile.r68 -C src-tk clean
 	make -f Makefile.r68 -C GLUT_apple clean
 	make -f Makefile.r68 -C Library\ Sources clean
 	make -f Makefile.r68 -C Examples clean
+	make -f Makefile.r68 -C book clean
+	make -f Makefile.r68 -C demos clean
+	make -f Makefile.r68 -C samples clean
+	make -f Makefile.r68 -C util clean
 	rm -f *.a */*.a

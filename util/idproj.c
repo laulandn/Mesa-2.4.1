@@ -1,6 +1,9 @@
 /* idproj.c */
 
 
+#include <GL/gl.h>
+
+
 /*
  * Setup an identity projection such that glVertex(x,y) maps to
  * window coordinate (x,y).

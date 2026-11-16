@@ -146,7 +146,11 @@ typedef struct _GLUTwindow GLUTwindow;
 struct _GLUTwindow {
   int num;              /* small integer window id (0-based) */
   /* CWindowPtr system related state. */
+#ifdef NO_COLOR_QUICKDRAW
+  WindowPtr win;           /* X window for GLUT window */
+#else
   CWindowPtr win;           /* X window for GLUT window */
+#endif
   AGLContext ctx;       /* OpenGL context GLUT glut window */
   AGLPixelFormat vis;     /* visual for window */
   char title[100];
@@ -154,8 +158,11 @@ struct _GLUTwindow {
   CSpecArray cmap;        /* RGB colormap for window; None if CI */
   GLUTcolormap *colormap;  /* colormap; NULL if RGBA */
 
-  CWindowPtr renderWin;     /* AGL window for rendering (might be
-                           overlay) */
+#ifdef NO_COLOR_QUICKDRAW
+  WindowPtr renderWin;     /* AGL window for rendering (might be                       overlay) */
+#else
+  CWindowPtr renderWin;     /* AGL window for rendering (might be                       overlay) */
+#endif
   AGLContext renderCtx; /* OpenGL context for rendering (might
                            be overlay) */
                            
@@ -317,7 +324,11 @@ extern void __glutFatalError(const char *format,...);
 extern void __glutFatalUsage(const char *format,...);
 
 /* private routines from glut_win.c */
+#ifdef NO_COLOR_QUICKDRAW
+extern GLUTwindow *__glutGetWindow(WindowPtr win);
+#else
 extern GLUTwindow *__glutGetWindow(CWindowPtr win);
+#endif
 extern void __glutRemoveFromWorkList(GLUTwindow *window);
 extern void __glutEstablishColormapsProperty(
   GLUTwindow * window);

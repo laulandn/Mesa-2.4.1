@@ -1,0 +1,30 @@
+
+#CC=m68k-apple-macos-gcc
+#CXX=m68k-apple-macos-g++
+#CC=powerpc-apple-macos-gcc
+#CXX=powerpc-apple-macos-g++
+
+CFLAGS= -I../../include
+LDFLAGS=-L../.. -lglut -lMesaOpenGLUtility -lMesaOpenGLLibrary -lm -L/opt/local/lib
+
+OBJS=$(subst .c,.o,$(wildcard *.c)) $(subst .cpp,.o,$(wildcard *.cpp))
+
+.cpp.o:
+	$(CXX) $(CFLAGS) -c -o $@ $<
+
+.c.o:
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+all: $(OBJS)
+	$(CXX) -o af_depthcue af_depthcue.o addfog.o $(LDFLAGS)
+#	../bin2app.sh af_depthcue
+	$(CXX) -o af_teapots af_teapots.o addfog.o texture.o $(LDFLAGS)
+#	../bin2app.sh af_teapots
+	$(CXX) -o envmap envmap.o addfog.o texture.o $(LDFLAGS)
+#	../bin2app.sh envmap
+	$(CXX) -o rasonly rasonly.o addfog.o $(LDFLAGS)
+#	../bin2app.sh rasonly
+
+clean:
+	rm -f *.o *.bin *.pef *.APPL *.dsk *.gdb 
+	rm -f af_depthcue af_teapots envmap rasonly sphere

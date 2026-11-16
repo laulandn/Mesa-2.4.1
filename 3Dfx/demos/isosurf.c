@@ -314,7 +314,7 @@ static GLenum Args(int argc, char **argv)
 
 
 
-void main(int argc, char **argv)
+int main(int argc, char **argv)
 {
    GLenum type;
    char *extensions;

@@ -1,0 +1,29 @@
+
+CC=m68k-apple-macos-gcc
+CXX=m68k-apple-macos-g++
+AR=m68k-apple-macos-ar
+RANLIB=m68k-apple-macos-ranlib
+#CC=powerpc-apple-macos-gcc
+#CXX=powerpc-apple-macos-g++
+#AR=powerpc-apple-macos-ar
+#RANLIB=powerpc-apple-macos-ranlib
+
+CFLAGS= -I../include -I/opt/local/include
+LDFLAGS=-L.. -lglut -lglauxtk -lMesaOpenGLUtility -lMesaOpenGLLibrary -lm
+
+
+OBJS=$(subst .c,.o,$(wildcard *.c))
+
+
+.c.o:
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+
+all: $(OBJS) accum bitmap1 bitmap2 blendeq blendxor copy cursor depth eval fog font line logo nurb oglinfo olympic overlay point prim quad select shape speed sphere star stencil stretch texture tri wave
+#	$(CC) -o logo.code.bin $(OBJS) $(LDFLAGS)
+#	$(CC) -o bluepony $(OBJS) $(LDFLAGS)
+#	../xcoff2app.sh logo
+
+clean:
+	rm -f *.o *.bin *.pef *.APPL *.dsk *.gdb
+	rm -f accum bitmap1 bitmap2 blendeq blendxor copy cursor depth eval fog font line logo nurb oglinfo olympic overlay point prim quad select shape speed sphere star stencil stretch texture tri wave

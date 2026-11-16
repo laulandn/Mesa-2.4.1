@@ -246,7 +246,7 @@ static GLenum Args(int argc, char **argv)
     return GL_TRUE;
 }
 
-void main(int argc, char **argv)
+int main(int argc, char **argv)
 {
     GLenum type;
     char *s;

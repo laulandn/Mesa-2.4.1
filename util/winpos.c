@@ -1,6 +1,9 @@
 /* winpos.c */
 
 
+#include <GL/gl.h>
+
+
 /*
  * Set the current raster position to a specific window
  * coordinate.  Also see the GL_MESA_window_pos extension.

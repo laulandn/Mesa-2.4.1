@@ -1,55 +1,25 @@
-# Makefile for sample programs
+
+#CC=m68k-apple-macos-gcc
+#CXX=m68k-apple-macos-g++
+#CC=powerpc-apple-macos-gcc
+#CXX=powerpc-apple-macos-g++
+
+CFLAGS= -I../include -I/opt/local/include
+LDFLAGS=-lglu -lgl -lglut -lm -L/opt/local/include
 
 
-
-##### MACROS #####
-
-INCDIR = ../include
-
-GL_LIBS = -L../lib -lMesatk -lMesaGLU -lMesaGL -lm $(XLIBS)
-
-LIB_DEP = ../lib/$(GL_LIB) ../lib/$(GLU_LIB) ../lib/$(TK_LIB) ../lib/$(AUX_LIB)
-
-PROGS = accum bitmap1 bitmap2 blendeq blendxor copy cursor depth \
-	eval fog font line logo nurb oglinfo olympic \
-	overlay point prim quad select shape \
-	speed sphere star stencil stretch texture \
-	tri wave
+OBJS=$(subst .c,.o,$(wildcard *.c))
 
 
-
-##### RULES #####
-
-.SUFFIXES:
-.SUFFIXES: .c
-
-.c: $(LIB_DEP)
-	$(CC) -I$(INCDIR) $(CFLAGS) $< $(GL_LIBS) -o $@
+.c.o:
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 
-
-##### TARGETS #####
-
-default:
-	@echo "Specify a target configuration"
+all: $(OBJS) accum bitmap1 bitmap2 blendeq blendxor copy cursor depth eval fog font line logo nurb oglinfo olympic overlay point prim quad select shape speed sphere star stencil stretch texture tri wave
+#	$(CC) -o logo.code.bin $(OBJS) $(LDFLAGS)
+#	$(CC) -o bluepony $(OBJS) $(LDFLAGS)
+#	../xcoff2app.sh logo
 
 clean:
-	-rm *.o *~
-
-realclean:
-	-rm $(PROGS)
-	-rm *.o *~
-
-targets: $(PROGS)
-
-# execute all programs
-exec: $(PROGS)
-	@for prog in $(PROGS) ;			\
-	do					\
-		echo -n "Running $$prog ..." ;	\
-		$$prog ;			\
-		echo ;				\
-	done
-
-
-include ../Make-config
+	rm -f *.o *.bin *.pef *.APPL *.dsk *.gdb
+	rm -f accum bitmap1 bitmap2 blendeq blendxor copy cursor depth eval fog font line logo nurb oglinfo olympic overlay point prim quad select shape speed sphere star stencil stretch texture tri wave

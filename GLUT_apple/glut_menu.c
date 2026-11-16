@@ -291,7 +291,11 @@ void __glutRebuildMenuBar(void)
 	
 	if(!__glutCurrentWindow->fullscreen)
 	{
+#ifdef NO_COLOR_QUICKDRAW
+		if(__glutCurrentWindow != __glutGetWindow((GrafPtr) FrontWindow())) return;
+#else
 		if(__glutCurrentWindow != __glutGetWindow((CGrafPtr) FrontWindow())) return;
+#endif
 	}
 	
 	__glutRemoveAllMenusFromBar();

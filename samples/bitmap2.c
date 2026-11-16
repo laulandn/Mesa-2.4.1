@@ -759,7 +759,7 @@ static GLenum Args(int argc, char **argv)
     return GL_TRUE;
 }
 
-void main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 
     if (Args(argc, argv) == GL_FALSE) {

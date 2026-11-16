@@ -20,5 +20,4 @@ clean:
 	make -f Makefile.r68 -C UnderWater clean
 	make -f Makefile.r68 -C Walker clean
 	make -f Makefile.r68 -C Sample clean
-	rm -rf */*.o
-	rm -rf */*\ Data
+	rm -rf */*.o */*\ Data */std???.txt */glut_error_log

@@ -1,0 +1,20 @@
+
+#AR=m68k-apple-macos-ar
+#RANLIB=m68k-apple-macos-ranlib
+AR=powerpc-apple-macos-ar
+RANLIB=powerpc-apple-macos-ranlib
+
+
+all:
+	make -i -f Makefile.r68ppc -C src
+	make -i -f Makefile.r68ppc -C demos
+	make -i -f Makefile.r68ppc lib
+
+lib:
+	rm -f *.a
+	cp */*.a .
+	
+clean:
+	make -f Makefile.r68ppc -C src clean
+	make -f Makefile.r68ppc -C demos clean
+	rm -f *.a */*.a

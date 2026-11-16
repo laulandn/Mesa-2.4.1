@@ -1,0 +1,128 @@
+
+#CC=m68k-apple-macos-gcc
+#CXX=m68k-apple-macos-g++
+#AR=m68k-apple-macos-ar
+#RANLIB=m68k-apple-macos-ranlib
+CC=powerpc-apple-macos-gcc
+CXX=powerpc-apple-macos-g++
+AR=powerpc-apple-macos-ar
+RANLIB=powerpc-apple-macos-ranlib
+
+CFLAGS= -I../include -I/opt/local/include
+LDFLAGS=-L.. -lglut -lglauxtk -lMesaOpenGLUtility -lMesaOpenGLLibrary -lm
+
+
+OBJS=$(subst .c,.o,$(wildcard *.c))
+
+
+.c.o:
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+
+all: $(OBJS) bounce clearspd gamma gears glxdemo glxpixmap isosurf morph3d offset osdemo reflect shape spectex spin stex3d tess_demo test0 texcyl texobj trispd vgears vindex vtest winpos xdemo
+
+
+bounce:	bounce.o
+	$(CXX) -o bounce bounce.o $(LDFLAGS)
+	../xcoff2app.sh.sh bounce
+
+clearspd:	clearspd.o
+	$(CXX) -o clearspd clearspd.o $(LDFLAGS)
+	../xcoff2app.sh.sh clearspd
+
+gamma:	gamma.o
+	$(CXX) -o gamma gamma.o $(LDFLAGS)
+	../xcoff2app.sh.sh gamma
+
+gears:	gears.o
+	$(CXX) -o gears gears.o $(LDFLAGS)
+	../xcoff2app.sh.sh gears
+
+glxdemo:	glxdemo.o
+	$(CXX) -o glxdemo glxdemo.o $(LDFLAGS)
+	../xcoff2app.sh.sh glxdemo
+
+glxpixmap:	glxpixmap.o
+	$(CXX) -o glxpixmap glxpixmap.o $(LDFLAGS)
+	../xcoff2app.sh.sh glxpixmap
+
+isosurf:	isosurf.o
+	$(CXX) -o isosurf isosurf.o $(LDFLAGS)
+	../xcoff2app.sh.sh isosurf
+
+morph3d:	morph3d.o
+	$(CXX) -o morph3d morph3d.o $(LDFLAGS)
+	../xcoff2app.sh.sh morph3d
+
+offset:	offset.o
+	$(CXX) -o offset offset.o $(LDFLAGS)
+	../xcoff2app.sh.sh offset
+
+osdemo:	osdemo.o
+	$(CXX) -o osdemo osdemo.o $(LDFLAGS)
+	../xcoff2app.sh.sh osdemo
+
+reflect:	reflect.o
+	$(CXX) -o reflect reflect.o $(LDFLAGS)
+	../xcoff2app.sh.sh reflect
+
+shape:	shape.o
+	$(CXX) -o shape shape.o $(LDFLAGS)
+	../xcoff2app.sh.sh shape
+
+spectex:	spectex.o
+	$(CXX) -o spectex spectex.o $(LDFLAGS)
+	../xcoff2app.sh.sh spectex
+
+spin:	spin.o
+	$(CXX) -o spin spin.o $(LDFLAGS)
+	../xcoff2app.sh.sh spin
+
+stex3d:	stex3d.o
+	$(CXX) -o stex3d stex3d.o $(LDFLAGS)
+	../xcoff2app.sh.sh stex3d
+
+tess_demo:	tess_demo.o
+	$(CXX) -o tess_demo tess_demo.o $(LDFLAGS)
+	../xcoff2app.sh.sh tess_demo
+
+test0:	test0.o
+	$(CXX) -o test0 test0.o $(LDFLAGS)
+	../xcoff2app.sh.sh test0
+
+texcyl:	texcyl.o
+	$(CXX) -o texcyl texcyl.o $(LDFLAGS)
+	../xcoff2app.sh.sh texcyl
+
+texobj:	texobj.o
+	$(CXX) -o texobj texobj.o $(LDFLAGS)
+	../xcoff2app.sh.sh texobj
+
+trispd:	trispd.o
+	$(CXX) -o trispd trispd.o $(LDFLAGS)
+	../xcoff2app.sh.sh trispd
+
+vgears:	vgears.o
+	$(CXX) -o vgears vgears.o $(LDFLAGS)
+	../xcoff2app.sh.sh vgears
+
+vindex:	vindex.o
+	$(CXX) -o vindex vindex.o $(LDFLAGS)
+	../xcoff2app.sh.sh vindex
+
+vtest:	vtest.o
+	$(CXX) -o vtest vtest.o $(LDFLAGS)
+	../xcoff2app.sh.sh vtest
+
+winpos:	winpos.o
+	$(CXX) -o winpos winpos.o $(LDFLAGS)
+	../xcoff2app.sh.sh winpos
+
+xdemo:	xdemo.o
+	$(CXX) -o xdemo xdemo.o $(LDFLAGS)
+	../xcoff2app.sh.sh xdemo
+
+
+clean:
+	rm -f *.o *.bin *.pef *.APPL *.dsk *.gdb
+	rm -f bounce clearspd gamma gears glxdemo glxpixmap isosurf morph3d offset osdemo reflect shape spectex spin stex3d tess_demo test0 texcyl texobj trispd vgears vindex vtest winpos xdemo

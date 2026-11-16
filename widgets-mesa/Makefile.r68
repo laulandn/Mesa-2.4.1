@@ -6,9 +6,9 @@ RANLIB=m68k-apple-macos-ranlib
 
 
 all:
-	make -f Makefile.r68 -C src
-	make -f Makefile.r68 -C demos
-	make -f Makefile.r68 lib
+	make -i -f Makefile.r68 -C src
+	make -i -f Makefile.r68 -C demos
+	make -i -f Makefile.r68 lib
 
 lib:
 	rm -f *.a

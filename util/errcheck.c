@@ -9,7 +9,7 @@
 
 #include <GL/gl.h>
 #include <GL/glu.h>
-#incldue <stdio.h>
+#include <stdio.h>
 
 
 
